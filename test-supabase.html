@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitSync - Supabase Connection Test</title>
+</head>
+<body>
+  <h1>FitSync Connection Test</h1>
+  <p id="status">Checking connection...</p>
+
+  <script type="module">
+    import { supabase } from "./js/config/supabase.js";
+
+    const status = document.getElementById("status");
+
+    async function testConnection() {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+
+        if (error) {
+          throw error;
+        }
+
+        status.textContent =
+          "Connection successful! Supabase is responding.";
+
+        console.log("Supabase connection successful.");
+        console.log("Current session:", data.session);
+      } catch (error) {
+        status.textContent = "Connection failed. Check the browser console.";
+        console.error("Supabase connection error:", error);
+      }
+    }
+
+    testConnection();
+  </script>
+</body>
+</html>
