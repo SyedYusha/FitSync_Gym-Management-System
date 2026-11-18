@@ -1,0 +1,96 @@
+/* Forms */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+form .loginFormInputBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+form .loginFormInputBox .lucide-mail,
+form .loginFormInputBox .lucide-lock {
+    position: absolute;
+    left: 30px;
+}
+
+form .loginFormInputBox .lucide-eye {
+    position: absolute;
+    right: 40px;
+}
+form .loginFormBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: var(--space-3);
+}
+form .loginFormBox a{
+    transition: var(--transition-normal) ;
+}
+form .loginFormBox a:hover{
+    color: var(--text-primary);
+    text-decoration: underline;
+}
+form .loginFormBtn .btn{
+    width: 100%;
+}
+form .form-ftr span{
+    color: var(--primary);
+}
+form .form-ftr hr{
+    /* display: flex;
+    align-items: center; */
+    margin: var(--space-10);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-input {
+    width: 100%;
+    padding: 1rem 0rem 1rem 5.5rem;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sml);
+    background-color: var(--surface-light);
+    color: var(--text-primary);
+    font-size: var(--font-size-2md);
+    transition: border-color 0.2s;
+    margin: var(--space-4);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+}
+
+/* Status Badges */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.badge-warning {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.badge-danger {
+    background-color: #fee2e2;
+    color: #991b1b;
+}

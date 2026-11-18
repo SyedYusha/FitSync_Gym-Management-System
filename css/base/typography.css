@@ -1,0 +1,85 @@
+/* Font Family */
+@font-face {
+    font-family: "Inter";
+    src: url(../../assets/fonts/Inter/static/Inter_24pt-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Inter-Medium";
+    src: url(../../assets/fonts/Inter/static/Inter_28pt-Medium.ttf);
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url(../../assets/fonts/Poppins/Poppins-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Poppins-bold";
+    src: url(../../assets/fonts/Poppins/Poppins-Bold.ttf);
+}
+
+@font-face {
+    font-family: "Poppins-semi_bold";
+    src: url(../../assets/fonts/Poppins/Poppins-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: "Poppins-medium";
+    src: url(../../assets/fonts/Poppins/Poppins-Medium.ttf);
+}
+
+@import url(../base/variable.css);
+
+h1 {
+    font-family: var(--ff-heading-h1);
+    font-size: 4.8rem;
+    color: var(--text-primary);
+    font-weight: 900;
+    letter-spacing: .1rem;
+}
+
+h2 {
+    font-family: var(--ff-heading-h2);
+    font-size: 3.5rem;
+    color: var(--text-primary);
+    letter-spacing: .1rem;
+    font-weight: 700;
+}
+
+h3 {
+    font-family: var(--ff-heading-h3);
+    font-size: 2.4rem;
+    color: var(--text-primary);
+    letter-spacing: .1rem;
+    font-weight: 500;
+}
+
+h4 {
+    font-family: var(--ff-heading-h4);
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    font-weight: 300;
+}
+
+p,
+a,
+i {
+
+    font-family: var(--ff-body);
+    font-size: 1.5rem;
+    line-height: 2.1rem;
+    letter-spacing: .1rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.pr_lrg {
+
+    font-family: var(--ff-body);
+    font-size: 1.8rem;
+    line-height: 2.1rem;
+    letter-spacing: .1rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
