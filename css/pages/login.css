@@ -1,3 +1,167 @@
+
 main{
+    height: 100vh;
+    background-color: var(--bg-light);
+}
+.login-layout footer{
+    position: relative;
+    top: 35px;
+    text-align: center;
+}
+/* ===== Right Side Marketing Section ===== */
+.marketing-section {
+    background-color: var(--bg-dark);
+    color: var(--text-dark-primary);
+    padding: 4rem;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    border-top-left-radius: var( --radius-xl);
+    border-bottom-left-radius: var( --radius-xl);
+    
+}
+
+/* Subtle green glow in the top right corner */
+.marketing-section::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(47, 175, 144, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Dark Badge Variant */
+.badge-dark {
+    background-color: rgba(47, 175, 144, 0.1);
+    color: var(--primary);
+    border: 1px solid rgba(47, 175, 144, 0.3);
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    margin-bottom: 1.5rem;
+}
+
+/* Text Colors for Dark Mode */
+.text-white {
+    color: #FFFFFF;
+}
+
+.text-secondary-light {
+    color: var(--text-dark-secondary);
+    /* #94A3B8 */
+}
+
+/* Video Container */
+.video-container {
+    background-color: var(--surface-dark);
+    /* #252D38 */
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-dark);
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.video-thumbnail {
+    position: relative;
+    /* aspect-ratio: 16/9; */
+    background-color: #0f172a;
+    background-size: cover;
+    background-position: center;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Dark overlay on the image so the play button pops */
+.video-thumbnail::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.play-btn {
+    position: relative;
+    z-index: 2;
+    width: 64px;
+    height: 64px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 0 20px rgba(47, 175, 144, 0.4);
+}
+
+.play-btn:hover {
+    transform: scale(1.1);
+}
+
+.video-info {
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--surface-dark);
+}
+.video-info div{
+    display: flex;
+    align-items: center;
+ gap: 10px;
+}
+    
+/* Feature Cards (Dark Variant) */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.feature-card-dark {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-md);
+    padding: 1.2rem;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.feature-card-dark:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary);
+}
+
+/* Icon Sizes */
+.icon-sm {
+    width: 14px;
+    height: 14px;
+}
+
+.icon-md {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-lg {
+    width: 28px;
+    height: 28px;
+    margin-left: 4px;
+}
+
+/* Responsive: Hide right side on mobile */
+@media (max-width: 1024px) {
+    .marketing-section {
+        display: none;
+    }
 }
