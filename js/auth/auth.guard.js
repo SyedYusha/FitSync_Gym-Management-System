@@ -21,7 +21,7 @@ export async function requireAuth(allowedRoles = []) {
   const profile = await getCurrentProfile();
 
   if (!profile || !dashboardRoutes[profile.role]) {
-    window.location.replace("/unauthorized.html");
+    window.location.replace("/login.html");
     return null;
   }
 

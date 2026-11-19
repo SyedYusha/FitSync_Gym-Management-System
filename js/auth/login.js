@@ -8,7 +8,7 @@ const errorBox = document.getElementById("loginError");
 
 // Where each role goes after login
 const dashboardRoutes = {
-  owner: "/dashboards/owner.html",
+  owner: "",
   admin: "/dashboards/admin.html",
   trainer: "/dashboards/trainer.html",
   member: "/dashboards/member.html"
