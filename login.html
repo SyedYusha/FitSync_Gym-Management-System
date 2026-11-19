@@ -15,12 +15,13 @@
                                            Form Starts Here ===================
       ==============================================================-->
         <div class="login-layout container">
-            <form>
+            <form id="loginForm">
                 <div class="mainLogo">
                     <img src="./assets/images/MainLogo.png" alt="">
                 </div>
                 <h1>Welcome Back</h1>
                 <p>Enter your creidientials to manage your gym operations and dashboard .</p>
+                <p id="loginError" class="form-error" role="alert"></p>
                 <div class="loginFormInputBox">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -44,7 +45,7 @@
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-eye preview-icon">
+                        class="lucide lucide-eye preview-icon toggle-password" id="togglePassword">
                         <path
                             d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
                         <circle cx="12" cy="12" r="3" />
@@ -59,7 +60,7 @@
                     <a href="#">Forgot password?</a>
                 </div>
                 <div class="loginFormBtn">
-                    <button class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    <button class="btn btn-primary" id="loginBtn" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell preview-icon">
                             <path
@@ -184,6 +185,7 @@
       ==============================================================-->
     </main>
     <script type="module" src="./js/app.js"></script>
+    <script type="module" src="./js/auth/login.js"></script>
 </body>
 
 </html>

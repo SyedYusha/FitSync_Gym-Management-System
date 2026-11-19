@@ -2,9 +2,11 @@
 .form-group {
     margin-bottom: 1rem;
 }
-form{
+
+form {
     width: 380px;
 }
+
 form .loginFormInputBox {
     display: flex;
     align-items: center;
@@ -22,26 +24,32 @@ form .loginFormInputBox .lucide-eye {
     position: absolute;
     right: 40px;
 }
+
 form .loginFormBox {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: var(--space-3);
 }
-form .loginFormBox a{
-    transition: var(--transition-normal) ;
+
+form .loginFormBox a {
+    transition: var(--transition-normal);
 }
-form .loginFormBox a:hover{
+
+form .loginFormBox a:hover {
     color: var(--text-primary);
     text-decoration: underline;
 }
-form .loginFormBtn .btn{
+
+form .loginFormBtn .btn {
     width: 100%;
 }
-form .form-ftr span{
+
+form .form-ftr span {
     color: var(--primary);
 }
-form .form-ftr hr{
+
+form .form-ftr hr {
     /* display: flex;
     align-items: center; */
     margin: var(--space-10);
@@ -95,4 +103,32 @@ form .form-ftr hr{
 .badge-danger {
     background-color: #fee2e2;
     color: #991b1b;
+}
+
+/* Login error message — hidden until JS adds .visible */
+.form-error {
+    display: none;
+    color: var(--clr-error);
+    font-size: var(--font-size-sm);
+    margin: var(--space-2) var(--space-4);
+}
+
+.form-error.visible {
+    display: block;
+}
+
+/* Red border on invalid inputs */
+.form-input.input-error {
+    border-color: var(--clr-error);
+}
+
+/* Disabled button while signing in */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Make eye icon clickable */
+.toggle-password {
+    cursor: pointer;
 }
