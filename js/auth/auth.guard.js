@@ -21,10 +21,9 @@ export async function requireAuth(allowedRoles = []) {
   const profile = await getCurrentProfile();
 
   if (!profile || !dashboardRoutes[profile.role]) {
-    window.location.replace("/login.html");
+    window.location.replace("/login.html"); // Send them back to login if role is invalid
     return null;
   }
-
   if (
     allowedRoles.length > 0 &&
     !allowedRoles.includes(profile.role)

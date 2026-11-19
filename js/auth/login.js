@@ -8,10 +8,10 @@ const errorBox = document.getElementById("loginError");
 
 // Where each role goes after login
 const dashboardRoutes = {
-  owner: "",
-  admin: "/dashboards/admin.html",
-  trainer: "/dashboards/trainer.html",
-  member: "/dashboards/member.html"
+  owner: "../dashboards/owner.html",
+  admin: "../dashboards/admin.html",
+  trainer: "../dashboards/trainer.html",
+  member: "../dashboards/member.html"
 };
 
 function showError(message) {
@@ -52,6 +52,7 @@ form.addEventListener("submit", async (e) => {
 
     // 4. Fetch role from profiles table (RLS allows own-profile read)
     const profile = await getCurrentProfile();
+   console.log("PROFILE FROM DATABASE:", profile);
 
     if (!profile || !dashboardRoutes[profile.role]) {
       showError("No dashboard found for your role. Contact the gym owner.");
