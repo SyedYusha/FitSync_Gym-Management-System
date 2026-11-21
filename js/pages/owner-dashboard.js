@@ -27,26 +27,26 @@ export async function loadDashboardData() {
       .select("*", { count: "exact", head: true });
     document.getElementById("stat-members").textContent = memberCount || 0;
 
-    // 2. Active Plans (Memberships with status 'active')
-    const { count: activePlans } = await supabase
-      .from("memberships")
-      .select("*", { count: "exact", head: true })
-      .eq("status", "active");
-    document.getElementById("stat-plans").textContent = activePlans || 0;
+        // 2. Active Plans (Count memberships with status 'active')
+        const { count: activePlans } = await supabase
+            .from('memberships')
+            .select('*', { count: 'exact', head: true })
+            .eq('status', 'active');
+        document.getElementById('stat-plans').textContent = activePlans || 0;
 
-    // 3. Expiring Soon (Active memberships ending in the next 30 days)
-    const today = new Date().toISOString().split("T")[0];
-    const nextMonth = new Date();
-    nextMonth.setDate(nextMonth.getDate() + 30);
-    const nextMonthStr = nextMonth.toISOString().split("T")[0];
+        // 3. Expiring Soon (Active memberships ending in the next 30 days)
+        const today = new Date().toISOString().split('T')[0];
+        const nextMonth = new Date();
+        nextMonth.setDate(nextMonth.getDate() + 30);
+        const nextMonthStr = nextMonth.toISOString().split('T')[0];
 
-    const { count: expiring } = await supabase
-      .from("memberships")
-      .select("*", { count: "exact", head: true })
-      .eq("status", "active")
-      .gte("end_date", today)
-      .lte("end_date", nextMonthStr);
-    document.getElementById("stat-expiring").textContent = expiring || 0;
+        const { count: expiring } = await supabase
+            .from('memberships')
+            .select('*', { count: 'exact', head: true })
+            .eq('status', 'active')
+            .gte('end_date', today)
+            .lte('end_date', nextMonthStr);
+        document.getElementById('stat-expiring').textContent = expiring || 0;
 
     // 4. Monthly Revenue (Sum of completed payments this month)
     const startOfMonth = new Date();

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitSync - Reports</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/pages/dashboardOwner.css">
+    <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo"><img src="../assets/images/MainLogoDark.png" alt="mainLogo"></div>
+            <nav class="sidebar-nav">
+                <a href="./owner.html" class="nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+                <a href="./members.html" class="nav-item"><i data-lucide="users"></i> Members</a>
+                <a href="./plans.html" class="nav-item"><i data-lucide="crown"></i> Plans</a>
+                <a href="./payments.html" class="nav-item"><i data-lucide="credit-card"></i> Payments</a>
+                <a href="./attendance.html" class="nav-item"><i data-lucide="calendar-check"></i> Attendance</a>
+                <a href="./reports.html" class="nav-item active"><i data-lucide="bar-chart-3"></i> Reports</a>
+                <a href="./settings.html" class="nav-item"><i data-lucide="settings"></i> Settings</a>
+            </nav>
+            <button id="logoutBtn" class="nav-item logout-btn"><i data-lucide="log-out"></i> Logout</button>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-navbar">
+                <div class="navbar-left"><h2 style="font-size: 1.25rem; color: var(--text-clr); font-weight: 600;">Business Reports</h2></div>
+                <div class="navbar-right">
+                    <div class="user-profile">
+                        <div class="user-avatar" id="userAvatar">SY</div>
+                        <div class="user-info"><p class="user-name" id="userName">Owner</p><p class="user-role">Gym Owner</p></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-green"><i data-lucide="dollar-sign"></i></div>
+                        <div class="stat-content">
+                            <p class="stat-label">All-Time Revenue</p>
+                            <div class="stat-value-row"><h3 id="report-total-revenue" class="stat-value">$0</h3></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-green"><i data-lucide="users"></i></div>
+                        <div class="stat-content">
+                            <p class="stat-label">Total Members</p>
+                            <div class="stat-value-row"><h3 id="report-total-members" class="stat-value">0</h3></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-green"><i data-lucide="activity"></i></div>
+                        <div class="stat-content">
+                            <p class="stat-label">Total Check-ins</p>
+                            <div class="stat-value-row"><h3 id="report-total-checkins" class="stat-value">0</h3></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card table-card">
+                    <div class="card-header"><h3 class="card-title"><i data-lucide="file-text"></i> System Summary</h3></div>
+                    <div style="padding: 1rem;">
+                        <p style="color: var(--text-secondary);">Reports module is active. Data is fetched in real-time from the Supabase database.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script type="module">
+        import { supabase } from "../js/config/supabase.js";
+        import { requireAuth } from "../js/auth/auth.guard.js";
+        import { logout } from "../js/auth/auth.service.js";
+        import { loadReportsData } from "../js/pages/reports-dashboard.js";
+
+        const profile = await requireAuth(['owner']);
+        if (profile) {
+            document.getElementById('userName').textContent = profile.full_name;
+            document.getElementById('userAvatar').textContent = profile.full_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            await loadReportsData();
+            lucide.createIcons();
+        }
+        document.getElementById('logoutBtn').addEventListener('click', async () => await logout());
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -18,4 +18,141 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </body>
 
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitSync - Loading...</title>
+    <style>
+        /* Base Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: #0f172a; /* Deep dark background */
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #ffffff;
+        }
+
+        /* Loader Container */
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* FitSync Logo Styling */
+        .brand-logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: scaleUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .brand-logo .fit { color: #ffffff; }
+        .brand-logo .sync { color: #2FAF90; } /* FitSync Green */
+
+        /* Glowing Spinner */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(47, 175, 144, 0.2);
+            border-top: 4px solid #2FAF90;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 15px rgba(47, 175, 144, 0.3);
+        }
+
+        /* Loading Text */
+        .loading-text {
+            font-size: 1rem;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* 10 Pexels Footer */
+        .footer-brand {
+            position: absolute;
+            bottom: 2rem;
+            font-size: 0.85rem;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideUp 1s ease-out 0.5s both;
+        }
+        
+        .footer-brand .pixels {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        .footer-brand .blue-dot {
+            color: #00A8E8; /* 10 Pexels Blue */
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* Fade out effect before redirect */
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="loader-container" id="loader">
+        <!-- Brand Logo -->
+        <div class="brand-logo">
+            <span class="fit">Fit</span><span class="sync">Sync</span>
+        </div>
+
+        <!-- Animated Spinner -->
+        <div class="spinner"></div>
+
+        <!-- Status Text -->
+        <div class="loading-text">Connecting to secure server...</div>
+    </div>
+
+    <!-- Footer Branding -->
+    <div class="footer-brand">
+        Powered by <span class="pixels">10 <span class="blue-dot">P</span>EXELS</span>
+    </div>
+
+    <script>
+        // Wait for 2.5 seconds, then fade out and redirect to login
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            loader.classList.add('fade-out'); // Start fade out animation
+            
+            // Redirect to login page after fade out finishes (0.5s later)
+            setTimeout(() => {
+                window.location.href = './login.html';
+            }, 500); 
+            
+        }, 2500); // 2500ms = 2.5 seconds loader display time
+    </script>
+
+</body>
 </html>

@@ -516,7 +516,7 @@
     align-items: center;
     justify-content: center;
     font-weight: 600;
-    font-size: var(--font-size-sml);
+    font-size: var(--font-size-md);
 }
 
 .action-dots {
