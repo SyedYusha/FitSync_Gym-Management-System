@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FitSync - Members</title>
+    <title>FitSync - Member Portal</title>
     <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="../css/pages/dashboardOwner.css" />
+    <link rel="stylesheet" href="../css/pages/responsive.css" />
     <link
       rel="shortcut icon"
       href="../assets/images/favicon.png"
@@ -14,261 +15,314 @@
   </head>
   <body>
     <div class="dashboard-layout">
+      <!-- Sidebar -->
       <aside class="sidebar">
         <div class="sidebar-logo">
           <img src="../assets/images/MainLogoDark.png" alt="mainLogo" />
         </div>
         <nav class="sidebar-nav">
-          <a href="./owner.html" class="nav-item"
-            ><i data-lucide="layout-dashboard"></i> Dashboard</a
+          <a href="#" class="nav-item active" data-target="view-home"
+            ><i data-lucide="home"></i> Home</a
           >
-          <a href="./members.html" class="nav-item active"
-            ><i data-lucide="users"></i> Members</a
+          <a href="#" class="nav-item" data-target="view-payments"
+            ><i data-lucide="credit-card"></i> My Payments</a
           >
-          <a href="./plans.html" class="nav-item"
-            ><i data-lucide="crown"></i> Plans</a
-          >
-          <a href="./attendance.html" class="nav-item"
-            ><i data-lucide="calendar-check"></i> Attendance</a
-          >
-          <a href="./payments.html" class="nav-item"
-            ><i data-lucide="credit-card"></i> Payments</a
-          >
-          <a href="#" class="nav-item"
-            ><i data-lucide="settings"></i> Settings</a
+          <a href="#" class="nav-item" data-target="view-attendance"
+            ><i data-lucide="calendar-check"></i> My Attendance</a
           >
         </nav>
         <button id="logoutBtn" class="nav-item logout-btn">
           <i data-lucide="log-out"></i> Logout
         </button>
-        <div class="sidebar-footer">
-          <!-- The Live Sync Video -->
-          <div class="sidebar-footer-text">
-            <p class="sidebar-footer-title">FitSync v1.0</p>
-            <p class="sidebar-footer-subtitle">
-              Live Sync Active • Connected to Server
-            </p>
-          </div>
-          <div class="sync-video-container">
-            <video autoplay loop muted playsinline class="sync-video">
-              <source
-                src="../assets/videos/footer-_video.mp4"
-                type="video/mp4"
-              />
-            </video>
-          </div>
-        </div>
       </aside>
 
+      <!-- Main Content -->
       <main class="main-content">
         <header class="top-navbar">
           <div class="navbar-left">
-            <div class="search-box" style="width: 400px">
-              <i data-lucide="search"></i>
-              <input
-                type="text"
-                id="memberSearch"
-                placeholder="Search members by name or phone..."
-              />
-            </div>
+            <button class="menu-toggle"><i data-lucide="menu"></i></button>
+            <h2
+              style="
+                font-size: 1.25rem;
+                color: var(--text-clr);
+                font-weight: 600;
+              "
+              id="pageTitle"
+            >
+              Home
+            </h2>
           </div>
           <div class="navbar-right">
             <div class="user-profile">
-              <div class="user-avatar" id="userAvatar">SY</div>
+              <div class="user-avatar" id="userAvatar">ME</div>
               <div class="user-info">
-                <p class="user-name" id="userName">Owner</p>
-                <p class="user-role">Gym Owner</p>
+                <p class="user-name" id="userName">Member</p>
+                <p class="user-role">Active Member</p>
               </div>
             </div>
           </div>
         </header>
 
         <div class="page-content">
-          <div class="card table-card">
-            <div class="card-header">
-              <h3 class="card-title">
-                <i data-lucide="users"></i> All Members
-              </h3>
-              <button id="openMemberModalBtn" class="btn btn-primary">
-                <i data-lucide="plus"></i> Add New Member
-              </button>
+          <!-- HOME TAB -->
+          <div id="view-home" class="admin-view">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon stat-icon-green">
+                  <i data-lucide="award"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-label">Current Plan</p>
+                  <h3
+                    id="home-plan"
+                    class="stat-value"
+                    style="font-size: 1.1rem"
+                  >
+                    Loading...
+                  </h3>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon stat-icon-green">
+                  <i data-lucide="calendar"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-label">Days Remaining</p>
+                  <h3 id="home-days" class="stat-value">0</h3>
+                </div>
+              </div>
             </div>
-            <div class="table-container">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Avatar</th>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Status</th>
-                    <th>Join Date</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="membersTableBody"></tbody>
-              </table>
+
+            <!-- Check In/Out Actions -->
+            <div
+              class="card"
+              style="margin-bottom: 1.5rem; text-align: center; padding: 2rem"
+            >
+              <h3
+                class="card-title"
+                style="justify-content: center; margin-bottom: 1.5rem"
+              >
+                <i data-lucide="smartphone"></i> Quick Actions
+              </h3>
+              <div
+                style="
+                  display: flex;
+                  gap: 1rem;
+                  justify-content: center;
+                  flex-wrap: wrap;
+                "
+              >
+                <button
+                  id="btnCheckIn"
+                  class="btn btn-primary"
+                  style="padding: 1rem 2rem; font-size: 1.1rem"
+                >
+                  <i data-lucide="log-in"></i> Request Check-In
+                </button>
+                <button
+                  id="btnCheckOut"
+                  class="btn btn-outline"
+                  style="padding: 1rem 2rem; font-size: 1.1rem"
+                >
+                  <i data-lucide="log-out"></i> Request Check-Out
+                </button>
+              </div>
+              <p
+                id="actionStatus"
+                style="
+                  margin-top: 1rem;
+                  color: var(--text-secondary);
+                  font-size: 0.9rem;
+                "
+              ></p>
+            </div>
+
+            <!-- Member Chart -->
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i data-lucide="bar-chart-3"></i> My Check-In History
+                </h3>
+              </div>
+              <div class="chart-container">
+                <div class="chart-y-axis">
+                  <span>High</span><span>Med</span><span>Low</span
+                  ><span>0</span>
+                </div>
+                <div class="chart-bars" id="memberChartBars"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PAYMENTS TAB -->
+          <div id="view-payments" class="admin-view" style="display: none">
+            <div class="card table-card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i data-lucide="credit-card"></i> Payment History
+                </h3>
+              </div>
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Amount</th>
+                      <th>Method</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="memberPaymentsBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ATTENDANCE TAB -->
+          <div id="view-attendance" class="admin-view" style="display: none">
+            <div class="card table-card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i data-lucide="calendar-check"></i> Attendance History
+                </h3>
+              </div>
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Check-In Time</th>
+                      <th>Check-Out Time</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="memberAttendanceBody"></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </main>
     </div>
 
-    <!-- REUSE THE ADD MEMBER MODAL FROM OWNER.HTML -->
-    <div id="addMemberModal" class="modal-overlay" style="display: none">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="card-title">Add New Member</h3>
-          <button id="closeModalBtn" class="modal-close">
-            <i data-lucide="x"></i>
-          </button>
-        </div>
-        <form id="addMemberForm">
-          <div class="form-group">
-            <label class="form-label">Full Name</label
-            ><input
-              type="text"
-              id="newMemberName"
-              class="form-input"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Email (for login)</label
-            ><input
-              type="email"
-              id="newMemberEmail"
-              class="form-input"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Phone Number</label
-            ><input
-              type="text"
-              id="newMemberPhone"
-              class="form-input"
-              required
-            />
-          </div>
-          <div class="form-group" style="display: flex; gap: 1rem">
-            <div style="flex: 1">
-              <label class="form-label">Status</label
-              ><select id="newMemberStatus" class="form-input">
-                <option value="active">Active</option>
-                <option value="frozen">Frozen</option>
-              </select>
-            </div>
-            <div style="flex: 1">
-              <label class="form-label">Join Date</label
-              ><input
-                type="date"
-                id="newMemberJoinDate"
-                class="form-input"
-                required
-              />
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" id="cancelModalBtn" class="btn btn-outline">
-              Cancel
-            </button>
-            <button type="submit" id="saveMemberBtn" class="btn btn-primary">
-              Save Member
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="../js/responsive-nav.js"></script>
+        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="../js/responsive-nav.js"></script>
     <script type="module">
-      import { supabase } from "../js/config/supabase.js";
-      import { requireAuth } from "../js/auth/auth.guard.js";
-      import { logout } from "../js/auth/auth.service.js";
-      import {
-        loadMembersData,
-        deleteMember,
-        attachDeleteListeners,
-      } from "../js/pages/members-dashboard.js";
-      const profile = await requireAuth(["owner", "admin"]);
-      if (profile) {
-        document.getElementById("userName").textContent = profile.full_name;
-        document.getElementById("userAvatar").textContent = profile.full_name
-          .split(" ")
-          .map((n) => n[0])
-          .join("")
-          .substring(0, 2)
-          .toUpperCase();
-        await loadMembersData();
-        attachDeleteListeners();
+        import { supabase } from "../js/config/supabase.js";
+        import { requireAuth } from "../js/auth/auth.guard.js";
+        import { logout } from "../js/auth/auth.service.js";
 
-        lucide.createIcons();
-      }
-      document
-        .getElementById("logoutBtn")
-        .addEventListener("click", async () => await logout());
+        const fmtDate = d => d ? new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+        const fmtTime = d => d ? new Date(d).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) : '—';
 
-      // Search functionality
-      document.getElementById("memberSearch").addEventListener("input", (e) => {
-        loadMembersData(e.target.value);
-      });
+        const profile = await requireAuth(['member', 'owner', 'admin']);
+        let currentMemberId = null;
 
-      // Modal Logic
-      const modal = document.getElementById("addMemberModal");
-      const openBtn = document.getElementById("openMemberModalBtn");
-      const closeBtn = document.getElementById("closeModalBtn");
-      const cancelBtn = document.getElementById("cancelModalBtn");
-      const form = document.getElementById("addMemberForm");
+        if (profile) {
+            document.getElementById('userName').textContent = profile.full_name;
+            document.getElementById('userAvatar').textContent = profile.full_name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
 
-      document.getElementById("newMemberJoinDate").valueAsDate = new Date();
-      const openModal = () => {
-        modal.style.display = "flex";
-        lucide.createIcons();
-      };
-      const closeModal = () => {
-        modal.style.display = "none";
-        form.reset();
-        document.getElementById("newMemberJoinDate").valueAsDate = new Date();
-      };
+            // SAFE QUERY: Prevents 406 error if member row is missing
+            const { data: memberRows } = await supabase.from('members').select('id').eq('profile_id', profile.id).limit(1);
+            currentMemberId = memberRows && memberRows.length > 0 ? memberRows[0].id : null;
 
-      openBtn.addEventListener("click", openModal);
-      closeBtn.addEventListener("click", closeModal);
-      cancelBtn.addEventListener("click", closeModal);
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) closeModal();
-      });
+            if (currentMemberId) {
+                // 1. Load Home Stats
+                const { data: mem } = await supabase.from('memberships').select('end_date, plans(name)').eq('member_id', currentMemberId).eq('status','active').order('end_date',{ascending:false}).limit(1).maybeSingle();
+                if (mem) {
+                    document.getElementById('home-plan').textContent = mem.plans?.name || 'Standard';
+                    const days = Math.max(0, Math.ceil((new Date(mem.end_date) - new Date())/86400000));
+                    document.getElementById('home-days').textContent = days;
+                } else {
+                    document.getElementById('home-plan').textContent = 'No Active Plan';
+                    document.getElementById('home-days').textContent = '0';
+                }
 
-      // Form Submit (Calls Edge Function)
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const saveBtn = document.getElementById("saveMemberBtn");
-        saveBtn.disabled = true;
-        saveBtn.textContent = "Creating...";
+                // 2. Load Payments
+                const { data: payments } = await supabase.from('payments').select('*').eq('member_id', currentMemberId).order('payment_date',{ascending:false});
+                const payBody = document.getElementById('memberPaymentsBody'); 
+                payBody.innerHTML = payments?.length ? payments.map(p => {
+                    const cls = p.status==='completed'?'badge-success':p.status==='pending'?'badge-warning':'badge-danger';
+                    return `<tr><td><strong>Rs. ${Number(p.amount).toLocaleString()}</strong></td><td style="text-transform:capitalize;">${p.payment_method}</td><td><span class="badge ${cls}">${p.status}</span></td><td>${fmtDate(p.payment_date)}</td></tr>`;
+                }).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);">No payments yet.</td></tr>';
 
-        const name = document.getElementById("newMemberName").value;
-        const email = document.getElementById("newMemberEmail").value;
-        const phone = document.getElementById("newMemberPhone").value;
-        const status = document.getElementById("newMemberStatus").value;
-        const joinDate = document.getElementById("newMemberJoinDate").value;
+                // 3. Load Attendance & Chart Data
+                const { data: att } = await supabase.from('attendance').select('*').eq('member_id', currentMemberId).order('check_in_time',{ascending:false});
+                const attBody = document.getElementById('memberAttendanceBody');
+                attBody.innerHTML = att?.length ? att.map(a => {
+                    const cls = a.status==='approved'?'badge-success':a.status==='pending'?'badge-warning':'badge-danger';
+                    return `<tr><td>${fmtDate(a.check_in_time)} · ${fmtTime(a.check_in_time)}</td><td>${a.check_out_time?fmtTime(a.check_out_time):'—'}</td><td><span class="badge ${cls}">${a.status||'pending'}</span></td></tr>`;
+                }).join('') : '<tr><td colspan="3" style="text-align:center;color:var(--text-secondary);">No attendance yet.</td></tr>';
 
-        try {
-          const { data, error } = await supabase.functions.invoke(
-            "create-member",
-            { body: { name, email, phone, status, joinDate } },
-          );
-          if (error) throw error;
-          if (data?.error) throw new Error(data.error);
+                renderMemberChart(att || []);
+            } else {
+                document.getElementById('home-plan').textContent = 'Profile Not Linked';
+            }
 
-          alert("Member added successfully!");
-          closeModal();
-          await loadMembersData();
-        } catch (err) {
-          alert("Error: " + err.message);
-        } finally {
-          saveBtn.disabled = false;
-          saveBtn.textContent = "Save Member";
+            lucide.createIcons();
         }
-      });
+
+        // --- CHART LOGIC ---
+        function renderMemberChart(attendanceData) {
+            const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+            const totals = new Array(12).fill(0);
+            attendanceData.forEach(a => { if(a.status==='approved') totals[new Date(a.check_in_time).getMonth()]++; });
+            const max = Math.max(...totals, 1);
+            const current = new Date().getMonth();
+            const container = document.getElementById('memberChartBars');
+            container.innerHTML = '';
+            for (let i = 5; i >= 0; i--) {
+                let idx = current - i; if (idx < 0) idx += 12;
+                const pct = Math.max((totals[idx] / max) * 100, 5);
+                container.innerHTML += `<div class="chart-bar-group"><div class="chart-bar" style="height:${pct}%" title="${totals[idx]} check-ins"></div><span class="chart-label">${monthNames[idx]}</span></div>`;
+            }
+        }
+
+        // --- CHECK IN/OUT LOGIC ---
+        document.getElementById('btnCheckIn').addEventListener('click', async () => {
+            if(!currentMemberId) return alert('Your profile is not linked to a member account. Contact admin.');
+            const btn = document.getElementById('btnCheckIn');
+            btn.disabled = true; btn.textContent = 'Requesting...';
+            try {
+                const { error } = await supabase.from('attendance').insert({ member_id: currentMemberId, status: 'pending' });
+                if (error) throw error;
+                document.getElementById('actionStatus').textContent = '✅ Check-in requested! Waiting for Admin approval.';
+                document.getElementById('actionStatus').style.color = 'var(--clr-success)';
+            } catch(e) { alert('Error: ' + e.message); }
+            finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="log-in"></i> Request Check-In'; lucide.createIcons(); }
+        });
+
+        document.getElementById('btnCheckOut').addEventListener('click', async () => {
+            if(!currentMemberId) return;
+            const btn = document.getElementById('btnCheckOut');
+            btn.disabled = true; btn.textContent = 'Requesting...';
+            try {
+                const { data: latest } = await supabase.from('attendance').select('id').eq('member_id', currentMemberId).eq('status', 'approved').is('check_out_time', null).order('check_in_time', {ascending:false}).limit(1).maybeSingle();
+                if(!latest) throw new Error('No active check-in found to check out from.');
+                
+                const { error } = await supabase.from('attendance').update({ check_out_time: new Date().toISOString() }).eq('id', latest.id);
+                if (error) throw error;
+                document.getElementById('actionStatus').textContent = '✅ Check-out recorded successfully!';
+                document.getElementById('actionStatus').style.color = 'var(--clr-success)';
+                setTimeout(() => location.reload(), 1000);
+            } catch(e) { alert('Error: ' + e.message); }
+            finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="log-out"></i> Request Check-Out'; lucide.createIcons(); }
+        });
+
+        // --- TAB SWITCHING ---
+        document.querySelectorAll('.sidebar-nav .nav-item[data-target]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.sidebar-nav .nav-item').forEach(l=>l.classList.remove('active'));
+                link.classList.add('active');
+                document.querySelectorAll('.admin-view').forEach(v=>v.style.display='none');
+                document.getElementById(link.dataset.target).style.display='block';
+                document.getElementById('pageTitle').textContent = link.textContent.trim();
+            });
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => await logout());
     </script>
   </body>
 </html>

@@ -5,7 +5,7 @@ import {
 
 const dashboardRoutes = {
   owner: "/dashboards/owner.html",
-  admin: "/dashboards/admin.html",
+  admin: "/dashboards/adminDashboard.html", 
   trainer: "/dashboards/trainer.html",
   member: "/dashboards/member.html"
 };

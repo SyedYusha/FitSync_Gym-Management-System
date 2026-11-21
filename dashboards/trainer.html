@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitSync - Trainer Dashboard</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/pages/dashboardOwner.css">
+    <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo"><img src="../assets/images/MainLogoDark.png" alt="mainLogo"></div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active"><i data-lucide="layout-dashboard"></i> My Dashboard</a>
+                <a href="#" class="nav-item"><i data-lucide="users"></i> My Clients</a>
+                <a href="#" class="nav-item"><i data-lucide="calendar"></i> Schedule</a>
+            </nav>
+            <button id="logoutBtn" class="nav-item logout-btn"><i data-lucide="log-out"></i> Logout</button>
+        </aside>
+        <main class="main-content">
+            <header class="top-navbar">
+                <div class="navbar-left"><h2 style="font-size: 1.25rem; color: var(--text-clr); font-weight: 600;">Trainer Portal</h2></div>
+                <div class="navbar-right">
+                    <div class="user-profile"><div class="user-avatar" id="userAvatar">TR</div>
+                        <div class="user-info"><p class="user-name" id="userName">Trainer</p><p class="user-role">Certified Trainer</p></div>
+                    </div>
+                </div>
+            </header>
+            <div class="page-content">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-icon stat-icon-green"><i data-lucide="users"></i></div><div class="stat-content"><p class="stat-label">Active Clients</p><div class="stat-value-row"><h3 class="stat-value">12</h3></div></div></div>
+                    <div class="stat-card"><div class="stat-icon stat-icon-green"><i data-lucide="dumbbell"></i></div><div class="stat-content"><p class="stat-label">Sessions Today</p><div class="stat-value-row"><h3 class="stat-value">4</h3></div></div></div>
+                </div>
+                <div class="card table-card">
+                    <h3 class="card-title" style="margin-bottom:1rem;"><i data-lucide="clock"></i> Today's Schedule</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead><tr><th>Time</th><th>Client Name</th><th>Focus</th></tr></thead>
+                            <tbody>
+                                <tr><td>09:00 AM</td><td><strong>Sarah Johnson</strong></td><td>Weight Loss</td></tr>
+                                <tr><td>11:00 AM</td><td><strong>David Kim</strong></td><td>Muscle Gain</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../js/responsive-nav.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script type="module">
+        import { requireAuth } from "../js/auth/auth.guard.js";
+        import { logout } from "../js/auth/auth.service.js";
+        const profile = await requireAuth(['trainer']);
+        if (profile) {
+            document.getElementById('userName').textContent = profile.full_name;
+            document.getElementById('userAvatar').textContent = profile.full_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            lucide.createIcons();
+        }
+        document.getElementById('logoutBtn').addEventListener('click', async () => await logout());
+    </script>
+</body>
+</html>

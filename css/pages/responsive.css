@@ -1,0 +1,71 @@
+/* =========================================
+   RESPONSIVE LAYER — applies to ALL dashboards
+   Desktop = sidebar visible. Mobile = off-canvas drawer.
+   ========================================= */
+
+/* Hide the drawer toggle on desktop */
+.menu-toggle { display: none; }
+.sidebar-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 90;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.sidebar-overlay.show { display: block; opacity: 1; }
+
+/* ---------- TABLET (<= 1024px) ---------- */
+@media (max-width: 1024px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .search-box { width: 220px; }
+}
+
+/* ---------- MOBILE (<= 768px) ---------- */
+@media (max-width: 768px) {
+    .dashboard-layout {
+        grid-template-columns: 1fr;   /* sidebar leaves the grid flow */
+    }
+
+    /* Sidebar becomes a slide-in drawer */
+    .sidebar {
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        width: 260px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 100;
+        box-shadow: 2px 0 12px rgba(0,0,0,0.2);
+    }
+    .sidebar.open { transform: translateX(0); }
+
+    /* Show the hamburger */
+    .menu-toggle { display: flex; }
+
+    /* Main content full width */
+    .main-content { width: 100%; }
+
+    .top-navbar { padding: 0.75rem 1rem; }
+    .search-box { display: none; }          /* search is a mobile killer */
+    .user-info { display: none; }           /* keep just the avatar */
+
+    .page-content { padding: 1rem; }
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .stat-card { padding: 1rem; }
+    .stat-value { font-size: 1.25rem; }
+
+    /* Tables scroll horizontally instead of breaking */
+    .table-container { overflow-x: auto; }
+    .data-table { min-width: 600px; }
+
+    /* Chart shorter on mobile */
+    .chart-container { height: 180px; }
+    .chart-card .card-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+}
+
+/* ---------- SMALL PHONE (<= 480px) ---------- */
+@media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .sidebar-footer { display: none; }      /* declutter the drawer */
+}
