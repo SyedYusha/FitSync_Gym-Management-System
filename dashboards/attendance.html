@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitSync - Attendance</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/pages/dashboardOwner.css" />
+    <link
+      rel="shortcut icon"
+      href="../assets/images/favicon.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <div class="dashboard-layout">
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+          <img src="../assets/images/MainLogoDark.png" alt="mainLogo" />
+        </div>
+        <nav class="sidebar-nav">
+          <a href="./owner.html" class="nav-item"
+            ><i data-lucide="layout-dashboard"></i> Dashboard</a
+          >
+          <a href="./members.html" class="nav-item"
+            ><i data-lucide="users"></i> Members</a
+          >
+          <a href="./plans.html" class="nav-item"
+            ><i data-lucide="crown"></i> Plans</a
+          >
+          <a href="./payments.html" class="nav-item"
+            ><i data-lucide="credit-card"></i> Payments</a
+          >
+          <a href="./attendance.html" class="nav-item active"
+            ><i data-lucide="calendar-check"></i> Attendance</a
+          >
+          <a href="#" class="nav-item"
+            ><i data-lucide="settings"></i> Settings</a
+          >
+        </nav>
+        <button id="logoutBtn" class="nav-item logout-btn">
+          <i data-lucide="log-out"></i> Logout
+        </button>
+        <div class="sidebar-footer">
+          <!-- The Live Sync Video -->
+          <div class="sidebar-footer-text">
+            <p class="sidebar-footer-title">FitSync v1.0</p>
+            <p class="sidebar-footer-subtitle">
+              Live Sync Active • Connected to Server
+            </p>
+          </div>
+          <div class="sync-video-container">
+            <video autoplay loop muted playsinline class="sync-video">
+              <source
+                src="../assets/videos/footer-_video.mp4"
+                type="video/mp4"
+              />
+            </video>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="top-navbar">
+          <div class="navbar-left">
+            <h2
+              style="
+                font-size: 1.25rem;
+                color: var(--text-clr);
+                font-weight: 600;
+              "
+            >
+              Attendance Tracking
+            </h2>
+          </div>
+          <div class="navbar-right">
+            <div class="user-profile">
+              <div class="user-avatar" id="userAvatar">SY</div>
+              <div class="user-info">
+                <p class="user-name" id="userName">Owner</p>
+                <p class="user-role">Gym Owner</p>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <div
+            class="dashboard-grid"
+            style="grid-template-columns: 1fr 2fr; align-items: start"
+          >
+            <!-- LEFT: Quick Check-In Panel -->
+            <div class="card actions-card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i data-lucide="user-check"></i> Quick Check-In
+                </h3>
+              </div>
+              <form
+                id="checkInForm"
+                style="display: flex; flex-direction: column; gap: 1rem"
+              >
+                <div class="form-group">
+                  <label class="form-label">Select Member</label>
+                  <select id="attendanceMemberId" class="form-input" required>
+                    <option value="">Loading members...</option>
+                  </select>
+                </div>
+                <button
+                  type="submit"
+                  id="checkInBtn"
+                  class="btn btn-primary"
+                  style="padding: 1rem; font-size: 1.1rem; margin-top: 1rem"
+                >
+                  <i data-lucide="log-in"></i> Mark Check-In
+                </button>
+              </form>
+              <div
+                id="checkInSuccess"
+                style="
+                  display: none;
+                  margin-top: 1rem;
+                  padding: 1rem;
+                  background: rgba(46, 204, 113, 0.1);
+                  color: var(--clr-success);
+                  border-radius: 8px;
+                  text-align: center;
+                  font-weight: 600;
+                "
+              >
+                ✅ Check-in successful!
+              </div>
+            </div>
+
+            <!-- RIGHT: Today's Activity Log -->
+            <div class="card table-card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i data-lucide="clock"></i> Today's Activity
+                </h3>
+                <span class="badge badge-success" id="todayCountBadge"
+                  >0 Check-ins</span
+                >
+              </div>
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Member Name</th>
+                      <th>Check-In Time</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="attendanceTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script type="module">
+      import { supabase } from "../js/config/supabase.js";
+      import { requireAuth } from "../js/auth/auth.guard.js";
+      import { logout } from "../js/auth/auth.service.js";
+      import {
+        loadMembersDropdown,
+        loadTodaysAttendance,
+        markCheckIn,
+      } from "../js/pages/attendance-dashboard.js";
+
+      const profile = await requireAuth(["owner", "admin", "trainer"]);
+      if (profile) {
+        document.getElementById("userName").textContent = profile.full_name;
+        document.getElementById("userAvatar").textContent = profile.full_name
+          .split(" ")
+          .map((n) => n[0])
+          .join("")
+          .substring(0, 2)
+          .toUpperCase();
+
+        await loadMembersDropdown();
+        await loadTodaysAttendance();
+        lucide.createIcons();
+      }
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", async () => await logout());
+
+      // Handle Check-In Form
+      document
+        .getElementById("checkInForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const btn = document.getElementById("checkInBtn");
+          const successMsg = document.getElementById("checkInSuccess");
+          const memberId = document.getElementById("attendanceMemberId").value;
+
+          btn.disabled = true;
+          btn.textContent = "Processing...";
+          successMsg.style.display = "none";
+
+          try {
+            await markCheckIn(memberId);
+            successMsg.style.display = "block";
+            document.getElementById("checkInForm").reset();
+            await loadMembersDropdown(); // Refresh dropdown
+            await loadTodaysAttendance(); // Refresh table
+            setTimeout(() => {
+              successMsg.style.display = "none";
+            }, 3000);
+          } catch (err) {
+            alert("Error: " + err.message);
+          } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i data-lucide="log-in"></i> Mark Check-In';
+            lucide.createIcons();
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -4,7 +4,8 @@
 .dashboard-layout {
     display: grid;
     grid-template-columns: 260px 1fr;
-    min-height: 100vh;
+    height: 100vh;          /* ← changed from min-height to height */
+    overflow: hidden;       /* ← prevents outer scroll */
     background-color: var(--bg-light);
 }
 
@@ -16,6 +17,10 @@
     display: flex;
     flex-direction: column;
     border-right: 1px solid var(--border-dark);
+    position: sticky;
+    top: 0;
+    overflow-y: auto;       /* allows sidebar to scroll if nav items overflow */
+    height: 100vh;
 }
 
 .sidebar-logo {
@@ -71,8 +76,24 @@
 }
 
 .page-content {
+    flex: 1;
+    overflow-y: auto;       /* ← ONLY this scrolls */
     padding: 2rem;
-    flex-grow: 1;
+}
+
+/* Custom scrollbar for the content area (optional, looks premium) */
+.page-content::-webkit-scrollbar {
+    width: 6px;
+}
+.page-content::-webkit-scrollbar-track {
+    background: var(--bg-light);
+}
+.page-content::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: 3px;
+}
+.page-content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
 }
 
 /* Login Layout */

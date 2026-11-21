@@ -16,7 +16,7 @@
 }
 
 .data-table th {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-3md);
     font-weight: 600;
     color: var(--text-secondary);
     text-transform: uppercase;
@@ -25,5 +25,5 @@
 
 .data-table td {
     color: var(--text-primary);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-4md);
 }

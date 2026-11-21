@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitSync - Payments</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/pages/dashboardOwner.css" />
+    <link
+      rel="shortcut icon"
+      href="../assets/images/favicon.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <div class="dashboard-layout">
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+          <img src="../assets/images/MainLogoDark.png" alt="mainLogo" />
+        </div>
+        <nav class="sidebar-nav">
+          <a href="./owner.html" class="nav-item"
+            ><i data-lucide="layout-dashboard"></i> Dashboard</a
+          >
+          <a href="./members.html" class="nav-item"
+            ><i data-lucide="users"></i> Members</a
+          >
+          <a href="./plans.html" class="nav-item"
+            ><i data-lucide="crown"></i> Plans</a
+          >
+          <a href="./payments.html" class="nav-item active"
+            ><i data-lucide="credit-card"></i> Payments</a
+          >
+          <a href="#" class="nav-item"
+            ><i data-lucide="settings"></i> Settings</a
+          >
+        </nav>
+        <button id="logoutBtn" class="nav-item logout-btn">
+          <i data-lucide="log-out"></i> Logout
+        </button>
+        <div class="sidebar-footer">
+          <!-- The Live Sync Video -->
+          <div class="sidebar-footer-text">
+            <p class="sidebar-footer-title">FitSync v1.0</p>
+            <p class="sidebar-footer-subtitle">
+              Live Sync Active • Connected to Server
+            </p>
+          </div>
+          <div class="sync-video-container">
+            <video autoplay loop muted playsinline class="sync-video">
+              <source
+                src="../assets/videos/footer-_video.mp4"
+                type="video/mp4"
+              />
+            </video>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="top-navbar">
+          <div class="navbar-left">
+            <h2
+              style="
+                font-size: 1.25rem;
+                color: var(--text-clr);
+                font-weight: 600;
+              "
+            >
+              Payment Records
+            </h2>
+          </div>
+          <div class="navbar-right">
+            <div class="user-profile">
+              <div class="user-avatar" id="userAvatar">SY</div>
+              <div class="user-info">
+                <p class="user-name" id="userName">Owner</p>
+                <p class="user-role">Gym Owner</p>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <div class="card table-card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i data-lucide="credit-card"></i> Recent Payments
+              </h3>
+              <button id="openPaymentModalBtn" class="btn btn-primary">
+                <i data-lucide="plus"></i> Record Payment
+              </button>
+            </div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Member Name</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="paymentsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- RECORD PAYMENT MODAL -->
+    <div id="addPaymentModal" class="modal-overlay" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="card-title">Record New Payment</h3>
+          <button id="closePaymentModalBtn" class="modal-close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <form id="addPaymentForm">
+          <div class="form-group">
+            <label class="form-label">Select Member</label>
+            <select id="paymentMemberId" class="form-input" required>
+              <option value="">Loading members...</option>
+            </select>
+          </div>
+          <div class="form-group" style="display: flex; gap: 1rem">
+            <div style="flex: 1">
+              <label class="form-label">Amount (Rs.)</label>
+              <input
+                type="number"
+                id="paymentAmount"
+                class="form-input"
+                placeholder="5000"
+                min="1"
+                step="0.01"
+                required
+              />
+            </div>
+            <div style="flex: 1">
+              <label class="form-label">Payment Method</label>
+              <select id="paymentMethod" class="form-input" required>
+                <option value="cash">Cash</option>
+                <option value="card">Card</option>
+                <option value="bank_transfer">Bank Transfer</option>
+                <option value="online">Online</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select id="paymentStatus" class="form-input" required>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+              <option value="failed">Failed</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="cancelPaymentModalBtn"
+              class="btn btn-outline"
+            >
+              Cancel
+            </button>
+            <button type="submit" id="savePaymentBtn" class="btn btn-primary">
+              Record Payment
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script type="module">
+      import { supabase } from "../js/config/supabase.js";
+      import { requireAuth } from "../js/auth/auth.guard.js";
+      import { logout } from "../js/auth/auth.service.js";
+      import {
+        loadPaymentsData,
+        loadMembersDropdown,
+      } from "../js/pages/payments-dashboard.js";
+
+      const profile = await requireAuth(["owner", "admin"]);
+      if (profile) {
+        document.getElementById("userName").textContent = profile.full_name;
+        document.getElementById("userAvatar").textContent = profile.full_name
+          .split(" ")
+          .map((n) => n[0])
+          .join("")
+          .substring(0, 2)
+          .toUpperCase();
+        await loadMembersDropdown(); // Populate the dropdown first
+        await loadPaymentsData(); // Then load the table
+        lucide.createIcons();
+      }
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", async () => await logout());
+
+      // Modal Logic
+      const modal = document.getElementById("addPaymentModal");
+      const openBtn = document.getElementById("openPaymentModalBtn");
+      const closeBtn = document.getElementById("closePaymentModalBtn");
+      const cancelBtn = document.getElementById("cancelPaymentModalBtn");
+      const form = document.getElementById("addPaymentForm");
+
+      const openModal = () => {
+        modal.style.display = "flex";
+        lucide.createIcons();
+      };
+      const closeModal = () => {
+        modal.style.display = "none";
+        form.reset();
+      };
+
+      openBtn.addEventListener("click", openModal);
+      closeBtn.addEventListener("click", closeModal);
+      cancelBtn.addEventListener("click", closeModal);
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // Form Submit
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const saveBtn = document.getElementById("savePaymentBtn");
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Recording...";
+
+        const member_id = document.getElementById("paymentMemberId").value;
+        const amount = parseFloat(
+          document.getElementById("paymentAmount").value,
+        );
+        const payment_method = document.getElementById("paymentMethod").value;
+        const status = document.getElementById("paymentStatus").value;
+
+        try {
+          const { error } = await supabase.from("payments").insert({
+            member_id,
+            amount,
+            payment_method,
+            status,
+          });
+          if (error) throw error;
+
+          alert("Payment recorded successfully!");
+          closeModal();
+          await loadPaymentsData();
+        } catch (err) {
+          alert("Error: " + err.message);
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.textContent = "Record Payment";
+        }
+      });
+    </script>
+  </body>
+</html>
