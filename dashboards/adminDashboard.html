@@ -25,7 +25,7 @@
 
         <main class="main-content">
             <header class="top-navbar">
-                <div class="navbar-left"><h2 style="font-size: 1.25rem; color: var(--text-clr); font-weight: 600;" id="pageTitle">Overview</h2></div>
+                <div class="navbar-left"><h2 style="font-size: 2.25rem; color: var(--text-clr); font-weight: 600;" id="pageTitle">Overview</h2></div>
                 <div class="navbar-right">
                     <div class="user-profile">
                         <div class="user-avatar" id="userAvatar">AD</div>
@@ -107,14 +107,36 @@
                 </div>
 
                 <!-- 5. TRAINERS -->
+                               <!-- 5. TRAINERS & ASSIGNMENTS -->
                 <div id="view-trainers" class="admin-view" style="display: none;">
+                    <!-- Assignment Form -->
+                    <div class="card" style="margin-bottom: 1.5rem;">
+                        <div class="card-header">
+                            <h3 class="card-title"><i data-lucide="user-plus"></i> Assign Member to Trainer</h3>
+                        </div>
+                        <div style="padding: 1.5rem;">
+                            <form id="assignTrainerForm" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+                                <div class="form-group" style="flex: 1; min-width: 200px;">
+                                    <label class="form-label">Select Member</label>
+                                    <select id="assignMemberSelect" class="form-input" required><option>Loading members...</option></select>
+                                </div>
+                                <div class="form-group" style="flex: 1; min-width: 200px;">
+                                    <label class="form-label">Select Trainer</label>
+                                    <select id="assignTrainerSelect" class="form-input" required><option>Loading trainers...</option></select>
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="height: 42px;">Send Request</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Trainers List -->
                     <div class="card table-card">
                         <div class="card-header">
-                            <h3 class="card-title"><i data-lucide="user-check"></i> Trainers & Assignments</h3>
+                            <h3 class="card-title"><i data-lucide="user-check"></i> All Trainers</h3>
                         </div>
                         <div class="table-container">
                             <table class="data-table">
-                                <thead><tr><th>Trainer Name</th><th>Assigned Members</th><th>Current Status</th></tr></thead>
+                                <thead><tr><th>Trainer Name</th><th>Specialty</th><th>Assigned Members</th><th>Status</th></tr></thead>
                                 <tbody id="adminTrainersTableBody"></tbody>
                             </table>
                         </div>

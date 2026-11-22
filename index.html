@@ -56,9 +56,6 @@
             window.location.href = './login.html';
         });
 
-        // 3. Fallback Safety Net: 
-        // If the video fails to load or the 'ended' event doesn't fire, 
-        // redirect after 6 seconds anyway so the user isn't stuck.
         setTimeout(() => {
             window.location.href = './login.html';
         }, 10000); 

@@ -6,7 +6,32 @@
     <title>FitSync - Trainer Dashboard</title>
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/pages/dashboardOwner.css">
+    <link rel="stylesheet" href="../css/pages/responsive.css">
     <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon">
+    <style>
+        .trainer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; background: #fff; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .trainer-info h2 { margin: 0 0 0.25rem 0; font-size: 1.5rem; color: var(--text-clr); }
+        .trainer-info p { margin: 0; color: var(--text-secondary); font-size: 0.9rem; }
+        .status-badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .status-active { background: rgba(46, 204, 113, 0.1); color: #2ecc71; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .kpi-card { background: #fff; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center; }
+        .kpi-card h3 { margin: 0; font-size: 2rem; color: var(--primary); font-weight: 700; }
+        .kpi-card p { margin: 0.5rem 0 0 0; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; }
+        .expiring-alert { background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; color: #c0392b; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; font-weight: 600; }
+        .trainer-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+        .search-box-custom { width: 100%; padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; }
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 90; display: none; opacity: 0; transition: opacity 0.3s; }
+        .drawer-overlay.show { display: block; opacity: 1; }
+        .member-drawer { position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: #fff; z-index: 100; box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease; overflow-y: auto; padding: 2rem; }
+        .member-drawer.open { right: 0; }
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem; }
+        .drawer-close { background: none; border: none; cursor: pointer; color: var(--text-secondary); }
+        .drawer-section { margin-bottom: 1.5rem; }
+        .drawer-section h4 { margin: 0 0 0.75rem 0; font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .drawer-info-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .drawer-info-row span:last-child { font-weight: 600; color: var(--text-clr); }
+    </style>
 </head>
 <body>
     <div class="dashboard-layout">
@@ -19,46 +44,285 @@
             </nav>
             <button id="logoutBtn" class="nav-item logout-btn"><i data-lucide="log-out"></i> Logout</button>
         </aside>
+
         <main class="main-content">
             <header class="top-navbar">
-                <div class="navbar-left"><h2 style="font-size: 1.25rem; color: var(--text-clr); font-weight: 600;">Trainer Portal</h2></div>
-                <div class="navbar-right">
-                    <div class="user-profile"><div class="user-avatar" id="userAvatar">TR</div>
-                        <div class="user-info"><p class="user-name" id="userName">Trainer</p><p class="user-role">Certified Trainer</p></div>
+                <div class="navbar-left"><button class="menu-toggle"><i data-lucide="menu"></i></button><h2 style="font-size:1.25rem;color:var(--text-clr);font-weight:600;">Trainer Portal</h2></div>
+                <div class="navbar-right"><div class="user-profile"><div class="user-avatar" id="userAvatar">TR</div><div class="user-info"><p class="user-name" id="userName">Trainer</p><p class="user-role">Certified Trainer</p></div></div></div>
+            </header>
+
+            <div class="page-content">
+                <!-- 1. TRAINER PROFILE CARD -->
+                <div class="trainer-header">
+                    <div class="trainer-info">
+                        <h2 id="trainerName">Loading...</h2>
+                        <p id="trainerSpec">Specialization: —</p>
+                        <p id="trainerContact">—</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="status-badge status-active">Active</span>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.85rem; color: var(--text-secondary);"><strong id="assignedCount">0</strong> Assigned Members</p>
                     </div>
                 </div>
-            </header>
-            <div class="page-content">
-                <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-icon stat-icon-green"><i data-lucide="users"></i></div><div class="stat-content"><p class="stat-label">Active Clients</p><div class="stat-value-row"><h3 class="stat-value">12</h3></div></div></div>
-                    <div class="stat-card"><div class="stat-icon stat-icon-green"><i data-lucide="dumbbell"></i></div><div class="stat-content"><p class="stat-label">Sessions Today</p><div class="stat-value-row"><h3 class="stat-value">4</h3></div></div></div>
-                </div>
-                <div class="card table-card">
-                    <h3 class="card-title" style="margin-bottom:1rem;"><i data-lucide="clock"></i> Today's Schedule</h3>
+
+                <!-- 2. PENDING REQUESTS -->
+                <div class="card table-card" style="margin-bottom: 1.5rem;">
+                    <div class="card-header"><h3 class="card-title"><i data-lucide="inbox"></i> Pending Member Requests</h3></div>
                     <div class="table-container">
                         <table class="data-table">
-                            <thead><tr><th>Time</th><th>Client Name</th><th>Focus</th></tr></thead>
-                            <tbody>
-                                <tr><td>09:00 AM</td><td><strong>Sarah Johnson</strong></td><td>Weight Loss</td></tr>
-                                <tr><td>11:00 AM</td><td><strong>David Kim</strong></td><td>Muscle Gain</td></tr>
-                            </tbody>
+                            <thead><tr><th>Member Name</th><th>Plan</th><th>Requested On</th><th>Action</th></tr></thead>
+                            <tbody id="pendingRequestsBody"><tr><td colspan="4" style="text-align:center;color:var(--text-secondary);">Loading requests...</td></tr></tbody>
                         </table>
+                    </div>
+                </div>
+
+                <!-- 3. KPI TILES -->
+                <div class="kpi-grid">
+                    <div class="kpi-card"><h3 id="kpi-members">0</h3><p>My Members</p></div>
+                    <div class="kpi-card"><h3 id="kpi-checked-in">0</h3><p>Checked In Today</p></div>
+                    <div class="kpi-card"><h3 id="kpi-expiring" style="color: #e74c3c;">0</h3><p>Expiring This Week</p></div>
+                </div>
+
+                <!-- 4. EXPIRING ALERT -->
+                <div id="expiringAlert" class="expiring-alert" style="display: none;">
+                    <i data-lucide="alert-triangle"></i>
+                    <span id="expiringAlertText">0 members have memberships expiring within 7 days!</span>
+                </div>
+
+                <!-- 5. MAIN CONTENT GRID -->
+                <div class="trainer-grid">
+                    <div class="card table-card">
+                        <div class="card-header"><h3 class="card-title"><i data-lucide="users"></i> My Assigned Members</h3></div>
+                        <div style="padding: 1rem;"><input type="text" id="memberSearch" class="search-box-custom" placeholder="Search members by name..."></div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead><tr><th>Name</th><th>Plan</th><th>Status</th><th>Expiry</th><th>Last Check-In</th></tr></thead>
+                                <tbody id="membersTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card table-card">
+                        <div class="card-header"><h3 class="card-title"><i data-lucide="clock"></i> Today's Snapshot</h3></div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead><tr><th>Member</th><th>In</th><th>Out</th></tr></thead>
+                                <tbody id="attendanceTableBody"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-    <script src="../js/responsive-nav.js"></script>
+
+    <!-- 6. MEMBER DETAIL DRAWER -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="member-drawer" id="memberDrawer">
+        <div class="drawer-header">
+            <h3 style="margin:0;">Member Details</h3>
+            <button class="drawer-close" id="closeDrawer"><i data-lucide="x"></i></button>
+        </div>
+        <div id="drawerContent"></div>
+    </div>
+
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="../js/responsive-nav.js"></script>
     <script type="module">
+        import { supabase } from "../js/config/supabase.js";
         import { requireAuth } from "../js/auth/auth.guard.js";
         import { logout } from "../js/auth/auth.service.js";
+
+        const fmtDate = d => d ? new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
+        const fmtTime = d => d ? new Date(d).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) : '—';
+        const today = new Date().toISOString().split('T')[0];
+
         const profile = await requireAuth(['trainer']);
+        let myMemberIds = [];
+
+        // Safe DOM updater to prevent ANY null errors
+        const setSafe = (id, text) => { const el = document.getElementById(id); if(el) el.textContent = text; };
+
         if (profile) {
-            document.getElementById('userName').textContent = profile.full_name;
-            document.getElementById('userAvatar').textContent = profile.full_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            setSafe('userName', profile.full_name);
+            setSafe('userAvatar', profile.full_name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase());
+            setSafe('trainerName', profile.full_name);
+            setSafe('trainerSpec', `Specialization: ${profile.specialty || 'General Fitness'}`);
+            setSafe('trainerContact', `${profile.email || '—'} • ${profile.phone || '—'}`);
+
+            // --- FETCH PENDING REQUESTS ---
+            const { data: pendingRequests } = await supabase.from('trainer_assignments')
+                .select(`id, created_at, members ( id, profiles (full_name) )`)
+                .eq('trainer_id', profile.id)
+                .eq('status', 'pending');
+
+            const pendingBody = document.getElementById('pendingRequestsBody');
+            if(pendingBody) {
+                pendingBody.innerHTML = '';
+                if (pendingRequests && pendingRequests.length > 0) {
+                    pendingRequests.forEach(req => {
+                        const name = req.members?.profiles?.full_name || 'Unknown';
+                        const memberId = req.members?.id;
+                        const date = new Date(req.created_at).toLocaleDateString();
+                        pendingBody.innerHTML += `
+                            <tr>
+                                <td><strong>${name}</strong></td>
+                                <td>Active Member</td>
+                                <td>${date}</td>
+                                <td>
+                                    <button class="btn btn-primary" style="padding:0.25rem 0.5rem; font-size:0.8rem; margin-right:0.5rem;" onclick="acceptAssignment('${req.id}', '${memberId}')">Accept</button>
+                                    <button class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.8rem; color:var(--clr-error);" onclick="rejectAssignment('${req.id}')">Reject</button>
+                                </td>
+                            </tr>`;
+                    });
+                } else {
+                    pendingBody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);">No pending requests.</td></tr>';
+                }
+            }
+
+            // Global functions for accept/reject
+            window.acceptAssignment = async (reqId, memberId) => {
+                if(!confirm('Accept this member assignment?')) return;
+                try {
+                    await supabase.from('trainer_assignments').update({status: 'accepted'}).eq('id', reqId);
+                    await supabase.from('memberships').update({trainer_id: profile.id}).eq('member_id', memberId).eq('status', 'active');
+                    alert('Member accepted! Training started.');
+                    location.reload(); 
+                } catch(e) { alert('Error: ' + e.message); }
+            };
+
+            window.rejectAssignment = async (reqId) => {
+                if(!confirm('Reject this assignment?')) return;
+                try {
+                    await supabase.from('trainer_assignments').update({status: 'rejected'}).eq('id', reqId);
+                    alert('Request rejected.');
+                    location.reload();
+                } catch(e) { alert('Error: ' + e.message); }
+            };
+
+            // --- FETCH ASSIGNED MEMBERSHIPS ---
+            const { data: assignedMemberships } = await supabase.from('memberships')
+                .select(`id, member_id, status, end_date, members ( id, phone, profiles (full_name) ), plans (name)`)
+                .eq('trainer_id', profile.id);
+
+            const membersData = assignedMemberships || [];
+            myMemberIds = membersData.map(m => m.member_id);
+            setSafe('assignedCount', membersData.length);
+            setSafe('kpi-members', membersData.length);
+
+            // Render Members Table
+            function renderMembersTable(data) {
+                const tbody = document.getElementById('membersTableBody');
+                if(!tbody) return;
+                tbody.innerHTML = '';
+                if (!data.length) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No members assigned yet.</td></tr>';
+                    return;
+                }
+                data.forEach(m => {
+                    const name = m.members?.profiles?.full_name || 'Unknown';
+                    const statusClass = m.status === 'active' ? 'badge-success' : 'badge-danger';
+                    tbody.innerHTML += `
+                        <tr style="cursor:pointer;" onclick="openDrawer('${m.member_id}', '${name}', '${m.plans?.name}', '${m.end_date}', '${m.members?.phone}')">
+                            <td><strong>${name}</strong></td>
+                            <td>${m.plans?.name || '—'}</td>
+                            <td><span class="badge ${statusClass}">${m.status}</span></td>
+                            <td>${fmtDate(m.end_date)}</td>
+                            <td>—</td>
+                        </tr>`;
+                });
+            }
+            renderMembersTable(membersData);
+
+            // Fetch Today's Attendance
+            async function loadTodaysAttendance() {
+                if (!myMemberIds.length) return;
+                const { data: att } = await supabase.from('attendance')
+                    .select(`member_id, check_in_time, check_out_time, status, members ( profiles (full_name) )`)
+                    .in('member_id', myMemberIds)
+                    .gte('check_in_time', today)
+                    .order('check_in_time', { ascending: false });
+
+                const tbody = document.getElementById('attendanceTableBody');
+                if(!tbody) return;
+                tbody.innerHTML = '';
+                const checkedInSet = new Set(att?.map(a => a.member_id));
+                setSafe('kpi-checked-in', checkedInSet.size);
+
+                if (!att || !att.length) {
+                    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--text-secondary);">No check-ins today.</td></tr>';
+                    return;
+                }
+                att.forEach(a => {
+                    const name = a.members?.profiles?.full_name || 'Unknown';
+                    tbody.innerHTML += `<tr><td><strong>${name}</strong></td><td>${fmtTime(a.check_in_time)}</td><td>${a.check_out_time ? fmtTime(a.check_out_time) : '—'}</td></tr>`;
+                });
+            }
+            await loadTodaysAttendance();
+
+            // Expiring Memberships
+            const nextWeek = new Date(); nextWeek.setDate(nextWeek.getDate() + 7);
+            const expiringCount = membersData.filter(m => {
+                const end = new Date(m.end_date);
+                return end >= new Date() && end <= nextWeek && m.status === 'active';
+            }).length;
+            
+            setSafe('kpi-expiring', expiringCount);
+            const alertBox = document.getElementById('expiringAlert');
+            if (expiringCount > 0 && alertBox) {
+                alertBox.style.display = 'flex';
+                document.getElementById('expiringAlertText').textContent = `${expiringCount} of your members have memberships expiring within 7 days!`;
+            }
+
             lucide.createIcons();
+            setInterval(loadTodaysAttendance, 15000);
         }
+
+        // --- DRAWER LOGIC ---
+        window.openDrawer = async (memberId, name, plan, expiry, phone) => {
+            document.getElementById('drawerOverlay').classList.add('show');
+            document.getElementById('memberDrawer').classList.add('open');
+
+            const { data: att } = await supabase.from('attendance').select('*').eq('member_id', memberId).order('check_in_time', {ascending:false}).limit(10);
+            const { data: payments } = await supabase.from('payments').select('status').eq('member_id', memberId).order('payment_date', {ascending:false}).limit(5);
+            const lastPayStatus = payments?.[0]?.status || 'No Record';
+            const payClass = lastPayStatus === 'completed' ? 'badge-success' : lastPayStatus === 'pending' ? 'badge-warning' : 'badge-danger';
+
+            let attHtml = att?.length ? att.map(a => `<div class="drawer-info-row"><span>${fmtDate(a.check_in_time)}</span><span class="badge ${a.status==='approved'?'badge-success':'badge-warning'}" style="font-size:0.7rem;">${a.status}</span></div>`).join('') : '<p style="color:var(--text-secondary);font-size:0.85rem;">No records.</p>';
+
+            document.getElementById('drawerContent').innerHTML = `
+                <div class="drawer-section">
+                    <h4>Basic Info</h4>
+                    <div class="drawer-info-row"><span>Name</span><span>${name}</span></div>
+                    <div class="drawer-info-row"><span>Phone</span><span>${phone || '—'}</span></div>
+                    <div class="drawer-info-row"><span>Current Plan</span><span>${plan || '—'}</span></div>
+                    <div class="drawer-info-row"><span>Expiry Date</span><span>${fmtDate(expiry)}</span></div>
+                </div>
+                <div class="drawer-section">
+                    <h4>Payment Status (Latest)</h4>
+                    <div class="drawer-info-row"><span>Status</span><span class="badge ${payClass}">${lastPayStatus}</span></div>
+                </div>
+                <div class="drawer-section">
+                    <h4>Last 10 Attendance Records</h4>
+                    ${attHtml}
+                </div>
+            `;
+            lucide.createIcons();
+        };
+
+        const closeDrawer = () => {
+            document.getElementById('drawerOverlay').classList.remove('show');
+            document.getElementById('memberDrawer').classList.remove('open');
+        };
+        document.getElementById('closeDrawer').addEventListener('click', closeDrawer);
+        document.getElementById('drawerOverlay').addEventListener('click', closeDrawer);
+
+        // --- SEARCH FILTER ---
+        document.getElementById('memberSearch').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            supabase.from('memberships').select(`id, member_id, status, end_date, members ( id, phone, profiles (full_name) ), plans (name)`).eq('trainer_id', profile.id).ilike('members.profiles.full_name', `%${term}%`).then(({data}) => renderMembersTable(data || []));
+        });
+
         document.getElementById('logoutBtn').addEventListener('click', async () => await logout());
     </script>
 </body>

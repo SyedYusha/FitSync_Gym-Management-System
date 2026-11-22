@@ -84,3 +84,61 @@ export async function loadDashboardData() {
         console.error("Error loading dashboard data:", error);
     }
 }
+
+        // 5. TRAINERS & ASSIGNMENTS
+        const { data: trainers } = await supabase.from('trainers').select(`id, specialty, profiles (full_name)`);
+        const trainTbody = document.getElementById('adminTrainersTableBody');
+        const trainerSelect = document.getElementById('assignTrainerSelect');
+        const memberSelect = document.getElementById('assignMemberSelect');
+        
+        trainTbody.innerHTML = '';
+        trainerSelect.innerHTML = '<option value="">Select Trainer</option>';
+        memberSelect.innerHTML = '<option value="">Select Member</option>';
+
+        // Populate Trainer Dropdown & Table
+        if (trainers && trainers.length > 0) {
+            document.getElementById('stat-trainers-in').textContent = trainers.length;
+            trainers.forEach(t => {
+                const name = t.profiles?.full_name || 'Unknown Trainer';
+                trainerSelect.innerHTML += `<option value="${t.id}">${name}</option>`;
+                trainTbody.innerHTML += `<tr><td><strong>${name}</strong></td><td>${t.specialty || 'General'}</td><td>Assigned</td><td><span class="badge badge-success">Active</span></td></tr>`;
+            });
+        } else {
+            trainTbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No trainers added yet.</td></tr>';
+        }
+
+        // Populate Member Dropdown (Active members only)
+        const { data: activeMembers } = await supabase.from('members').select(`id, profiles (full_name)`).eq('status', 'active');
+        if (activeMembers) {
+            activeMembers.forEach(m => {
+                memberSelect.innerHTML += `<option value="${m.id}">${m.profiles?.full_name}</option>`;
+            });
+        }
+
+        // Handle Assignment Form Submit
+        const assignForm = document.getElementById('assignTrainerForm');
+        if (assignForm) {
+            assignForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const memberId = document.getElementById('assignMemberSelect').value;
+                const trainerId = document.getElementById('assignTrainerSelect').value;
+                
+                if(!memberId || !trainerId) return alert('Please select both member and trainer.');
+
+                const btn = assignForm.querySelector('button');
+                btn.disabled = true; btn.textContent = 'Sending...';
+
+                try {
+                    // Insert as 'pending'
+                    const { error } = await supabase.from('trainer_assignments').insert({
+                        member_id: memberId,
+                        trainer_id: trainerId,
+                        status: 'pending'
+                    });
+                    if (error) throw error;
+                    alert('Assignment request sent to trainer!');
+                    assignForm.reset();
+                } catch(err) { alert('Error: ' + err.message); }
+                finally { btn.disabled = false; btn.textContent = 'Send Request'; }
+            };
+        }
