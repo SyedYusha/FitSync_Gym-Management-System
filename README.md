@@ -71,5 +71,35 @@ Built with a mobile-first responsive design for members and a robust desktop int
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/FitSync_Gym-Management-System.git
+   git clone https://github.com/SyedYusha/FitSync_Gym-Management-System.git
    cd FitSync_Gym-Management-System
+   ```
+
+2. **Supabase Configuration:**
+   * Create a new project at [Supabase.com](https://supabase.com).
+   * Run the provided SQL schema scripts in the Supabase SQL Editor to set up tables and RLS policies.
+   * Update your `js/config/supabase.js` file with your Project URL and Anon Key.
+
+3. **Run Locally:**
+   * Open the project folder in VS Code.
+   * Use the **Live Server** extension to run `index.html`.
+
+---
+
+## 🌐 Live Demo
+**[Click here to view the live application on Vercel](https://fitsync-10pexels.vercel.app/)**
+
+*Demo Credentials:*
+* **Owner:** `owner@fitsync.gym` / `****`
+* **Admin:** `admin@fitsync.gym` / `adminFitSync@2020`
+* **Member:** `member@fitsync.gym` / `memFitSync@2020`
+
+---
+
+## 👥 Credits
+**Developed by:** Syed Yusha  
+**Powered by:** 10 PEXELS  
+**Version:** 1.0.0
+```
+
+---
