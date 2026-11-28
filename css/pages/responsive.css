@@ -27,7 +27,12 @@
     .dashboard-layout {
         grid-template-columns: 1fr;   /* sidebar leaves the grid flow */
     }
-
+.main-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
     /* Sidebar becomes a slide-in drawer */
     .sidebar {
         position: fixed;
