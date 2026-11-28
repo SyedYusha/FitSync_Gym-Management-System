@@ -200,10 +200,19 @@
                 } catch(e) { alert('Error: ' + e.message); }
             };
 
-            // --- FETCH ASSIGNED MEMBERSHIPS ---
+            // --- FIX: GET TRAINER ID FIRST ---
+            const { data: trainerRecord } = await supabase
+                .from('trainers')
+                .select('id')
+                .eq('profile_id', profile.id)
+                .maybeSingle();
+
+            const actualTrainerId = trainerRecord?.id;
+
+            // --- FETCH ASSIGNED MEMBERSHIPS (Using the correct Trainer ID) ---
             const { data: assignedMemberships } = await supabase.from('memberships')
                 .select(`id, member_id, status, end_date, members ( id, phone, profiles (full_name) ), plans (name)`)
-                .eq('trainer_id', profile.id);
+                .eq('trainer_id', actualTrainerId); // <--- FIXED: Uses actualTrainerId instead of profile.id
 
             const membersData = assignedMemberships || [];
             myMemberIds = membersData.map(m => m.member_id);
@@ -216,7 +225,7 @@
                 if(!tbody) return;
                 tbody.innerHTML = '';
                 if (!data.length) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No members assigned yet.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No members assigned yet. Ask Admin to assign you.</td></tr>';
                     return;
                 }
                 data.forEach(m => {

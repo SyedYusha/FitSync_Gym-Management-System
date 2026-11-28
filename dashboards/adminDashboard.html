@@ -1,326 +1,883 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FitSync - Admin Dashboard</title>
-    <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/pages/dashboardOwner.css">
-    <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon">
-</head>
-<body>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/pages/dashboardOwner.css" />
+    <link
+      rel="shortcut icon"
+      href="../assets/images/favicon.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
     <div class="dashboard-layout">
-        <aside class="sidebar">
-            <div class="sidebar-logo"><img src="../assets/images/MainLogoDark.png" alt="mainLogo"></div>
-            <nav class="sidebar-nav">
-                <a href="#" class="nav-item active" data-target="view-overview"><i data-lucide="layout-dashboard"></i> Overview</a>
-                <a href="#" class="nav-item" data-target="view-members"><i data-lucide="users"></i> Members</a>
-                <a href="#" class="nav-item" data-target="view-attendance"><i data-lucide="calendar-check"></i> Attendance</a>
-                <a href="#" class="nav-item" data-target="view-payments"><i data-lucide="credit-card"></i> Payments</a>
-                <a href="#" class="nav-item" data-target="view-trainers"><i data-lucide="user-check"></i> Trainers</a>
-                <a href="#" class="nav-item" data-target="view-expenses"><i data-lucide="receipt"></i> Expenses</a>
-            </nav>
-            <button id="logoutBtn" class="nav-item logout-btn"><i data-lucide="log-out"></i> Logout</button>
-        </aside>
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+          <img src="../assets/images/MainLogoDark.png" alt="mainLogo" />
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item active" data-target="view-overview"
+            ><i data-lucide="layout-dashboard"></i> Overview</a
+          >
+          <a href="#" class="nav-item" data-target="view-members"
+            ><i data-lucide="users"></i> Members</a
+          >
+          <a href="#" class="nav-item" data-target="view-attendance"
+            ><i data-lucide="calendar-check"></i> Attendance</a
+          >
+          <a href="#" class="nav-item" data-target="view-payments"
+            ><i data-lucide="credit-card"></i> Payments</a
+          >
+          <a href="#" class="nav-item" data-target="view-trainers"
+            ><i data-lucide="user-check"></i> Trainers</a
+          >
+          <a href="#" class="nav-item" data-target="view-expenses"
+            ><i data-lucide="receipt"></i> Expenses</a
+          >
+        </nav>
+        <button id="logoutBtn" class="nav-item logout-btn">
+          <i data-lucide="log-out"></i> Logout
+        </button>
+      </aside>
 
-        <main class="main-content">
-            <header class="top-navbar">
-                <div class="navbar-left"><h2 style="font-size: 2.25rem; color: var(--text-clr); font-weight: 600;" id="pageTitle">Overview</h2></div>
-                <div class="navbar-right">
-                    <div class="user-profile">
-                        <div class="user-avatar" id="userAvatar">AD</div>
-                        <div class="user-info"><p class="user-name" id="userName">Admin</p><p class="user-role">Gym Manager</p></div>
-                    </div>
-                </div>
-            </header>
-
-            <div class="page-content">
-                
-                <!-- 1. OVERVIEW -->
-                <div id="view-overview" class="admin-view">
-                    <div class="stats-grid">
-                        <div class="stat-card"><div class="stat-icon stat-icon-green"><i data-lucide="dollar-sign"></i></div><div class="stat-content"><p class="stat-label">Today's Collection</p><div class="stat-value-row"><h3 id="stat-today-col" class="stat-value">Rs. 0</h3></div></div></div>
-                        <div class="stat-card"><div class="stat-icon stat-icon-green"><i data-lucide="calendar"></i></div><div class="stat-content"><p class="stat-label">This Month's Collection</p><div class="stat-value-row"><h3 id="stat-month-col" class="stat-value">Rs. 0</h3></div></div></div>
-                        <div class="stat-card"><div class="stat-icon stat-icon-green"><i data-lucide="users"></i></div><div class="stat-content"><p class="stat-label">Active Members</p><div class="stat-value-row"><h3 id="stat-active-mem" class="stat-value">0</h3></div></div></div>
-                        <div class="stat-card"><div class="stat-icon stat-icon-green"><i data-lucide="user-check"></i></div><div class="stat-content"><p class="stat-label">Trainers Present</p><div class="stat-value-row"><h3 id="stat-trainers-in" class="stat-value">0</h3></div></div></div>
-                    </div>
-                </div>
-
-                <!-- 2. MEMBERS -->
-                <div id="view-members" class="admin-view" style="display: none;">
-                    <div class="card table-card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i data-lucide="users"></i> Member Management</h3>
-                            <button id="openMemberModalBtn" class="btn btn-primary"><i data-lucide="plus"></i> Add Member</button>
-                        </div>
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead><tr><th>Name</th><th>Phone</th><th>Status</th><th>Join Date</th><th>Actions</th></tr></thead>
-                                <tbody id="adminMembersTableBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. ATTENDANCE -->
-                <div id="view-attendance" class="admin-view" style="display: none;">
-                    <div class="dashboard-grid" style="grid-template-columns: 1fr 2fr;">
-                        <div class="card">
-                            <h3 class="card-title" style="margin-bottom:1rem;"><i data-lucide="log-in"></i> Quick Check-In</h3>
-                            <div class="form-group"><select id="attendanceMemberSelect" class="form-input"><option>Loading...</option></select></div>
-                            <button id="checkInBtn" class="btn btn-primary" style="width:100%;">Mark Check-In</button>
-                        </div>
-                        <div class="card table-card">
-                            <h3 class="card-title" style="margin-bottom:1rem;"><i data-lucide="clock"></i> Today's Activity</h3>
-                            <div class="table-container">
-                                <table class="data-table">
-                                      <thead><tr><th>Member</th><th>Check-In Time</th><th>Status</th><th>Action</th></tr></thead>
-                                    <tbody id="adminAttendanceTableBody"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. PAYMENTS -->
-                <div id="view-payments" class="admin-view" style="display: none;">
-                    <div class="dashboard-grid" style="grid-template-columns: 1fr 2fr;">
-                        <div class="card">
-                            <h3 class="card-title" style="margin-bottom:1rem;"><i data-lucide="credit-card"></i> Record Payment</h3>
-                            <form id="adminPaymentForm">
-                                <div class="form-group"><select id="paymentMemberSelect" class="form-input" required><option>Select Member</option></select></div>
-                                <div class="form-group"><input type="number" id="paymentAmount" class="form-input" placeholder="Amount (Rs.)" required></div>
-                                <div class="form-group"><select id="paymentMethod" class="form-input"><option value="cash">Cash</option><option value="card">Card</option><option value="online">Online</option></select></div>
-                                <button type="submit" class="btn btn-primary" style="width:100%;">Record Payment</button>
-                            </form>
-                        </div>
-                        <div class="card table-card">
-                            <h3 class="card-title" style="margin-bottom:1rem;"><i data-lucide="history"></i> Recent Payments</h3>
-                            <div class="table-container">
-                                <table class="data-table">
-                                    <thead><tr><th>Member</th><th>Amount</th><th>Method</th><th>Date</th></tr></thead>
-                                    <tbody id="adminPaymentsTableBody"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5. TRAINERS -->
-                               <!-- 5. TRAINERS & ASSIGNMENTS -->
-                <div id="view-trainers" class="admin-view" style="display: none;">
-                    <!-- Assignment Form -->
-                    <div class="card" style="margin-bottom: 1.5rem;">
-                        <div class="card-header">
-                            <h3 class="card-title"><i data-lucide="user-plus"></i> Assign Member to Trainer</h3>
-                        </div>
-                        <div style="padding: 1.5rem;">
-                            <form id="assignTrainerForm" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
-                                <div class="form-group" style="flex: 1; min-width: 200px;">
-                                    <label class="form-label">Select Member</label>
-                                    <select id="assignMemberSelect" class="form-input" required><option>Loading members...</option></select>
-                                </div>
-                                <div class="form-group" style="flex: 1; min-width: 200px;">
-                                    <label class="form-label">Select Trainer</label>
-                                    <select id="assignTrainerSelect" class="form-input" required><option>Loading trainers...</option></select>
-                                </div>
-                                <button type="submit" class="btn btn-primary" style="height: 42px;">Send Request</button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Trainers List -->
-                    <div class="card table-card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i data-lucide="user-check"></i> All Trainers</h3>
-                        </div>
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead><tr><th>Trainer Name</th><th>Specialty</th><th>Assigned Members</th><th>Status</th></tr></thead>
-                                <tbody id="adminTrainersTableBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 6. EXPENSES -->
-                <div id="view-expenses" class="admin-view" style="display: none;">
-                    <div class="dashboard-grid" style="grid-template-columns: 1fr 2fr;">
-                        <div class="card">
-                            <h3 class="card-title" style="margin-bottom:1rem;"><i data-lucide="plus-circle"></i> Add Expense</h3>
-                            <form id="adminExpenseForm">
-                                <div class="form-group"><input type="text" id="expenseTitle" class="form-input" placeholder="Title (e.g., Electricity)" required></div>
-                                <div class="form-group"><input type="number" id="expenseAmount" class="form-input" placeholder="Amount (Rs.)" required></div>
-                                <div class="form-group"><select id="expenseStatus" class="form-input"><option value="paid">Paid</option><option value="pending">Pending</option></select></div>
-                                <button type="submit" class="btn btn-primary" style="width:100%;">Add Expense</button>
-                            </form>
-                        </div>
-                        <div class="card table-card">
-                            <h3 class="card-title" style="margin-bottom:1rem;"><i data-lucide="receipt"></i> Gym Bills & Salaries</h3>
-                            <div class="table-container">
-                                <table class="data-table">
-                                    <thead><tr><th>Expense Type</th><th>Amount (Rs.)</th><th>Date</th><th>Status</th></tr></thead>
-                                    <tbody id="adminExpensesTableBody"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+      <main class="main-content">
+        <header class="top-navbar">
+          <div class="navbar-left">
+            <h2
+              style="
+                font-size: 2.25rem;
+                color: var(--text-clr);
+                font-weight: 600;
+              "
+              id="pageTitle"
+            >
+              Overview
+            </h2>
+          </div>
+          <div class="navbar-right">
+            <div class="user-profile">
+              <div class="user-avatar" id="userAvatar">AD</div>
+              <div class="user-info">
+                <p class="user-name" id="userName">Admin</p>
+                <p class="user-role">Gym Manager</p>
+              </div>
             </div>
-        </main>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <!-- 1. OVERVIEW -->
+          <div id="view-overview" class="admin-view">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon stat-icon-green">
+                  <i data-lucide="dollar-sign"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-label">Today's Collection</p>
+                  <div class="stat-value-row">
+                    <h3 id="stat-today-col" class="stat-value">Rs. 0</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon stat-icon-green">
+                  <i data-lucide="calendar"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-label">This Month's Collection</p>
+                  <div class="stat-value-row">
+                    <h3 id="stat-month-col" class="stat-value">Rs. 0</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon stat-icon-green">
+                  <i data-lucide="users"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-label">Active Members</p>
+                  <div class="stat-value-row">
+                    <h3 id="stat-active-mem" class="stat-value">0</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon stat-icon-green">
+                  <i data-lucide="user-check"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-label">Trainers Present</p>
+                  <div class="stat-value-row">
+                    <h3 id="stat-trainers-in" class="stat-value">0</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. MEMBERS -->
+          <div id="view-members" class="admin-view" style="display: none">
+            <div class="card table-card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i data-lucide="users"></i> Member Management
+                </h3>
+                <button id="openMemberModalBtn" class="btn btn-primary">
+                  <i data-lucide="plus"></i> Add Member
+                </button>
+              </div>
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Phone</th>
+                      <th>Status</th>
+                      <th>Join Date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminMembersTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. ATTENDANCE -->
+          <div id="view-attendance" class="admin-view" style="display: none">
+            <div class="dashboard-grid" style="grid-template-columns: 1fr 2fr">
+              <div class="card">
+                <h3 class="card-title" style="margin-bottom: 1rem">
+                  <i data-lucide="log-in"></i> Quick Check-In
+                </h3>
+                <div class="form-group">
+                  <select id="attendanceMemberSelect" class="form-input">
+                    <option>Loading...</option>
+                  </select>
+                </div>
+                <button
+                  id="checkInBtn"
+                  class="btn btn-primary"
+                  style="width: 100%"
+                >
+                  Mark Check-In
+                </button>
+              </div>
+              <div class="card table-card">
+                <h3 class="card-title" style="margin-bottom: 1rem">
+                  <i data-lucide="clock"></i> Today's Activity
+                </h3>
+                <div class="table-container">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Member</th>
+                        <th>Check-In Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="adminAttendanceTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. PAYMENTS -->
+          <div id="view-payments" class="admin-view" style="display: none">
+            <div class="dashboard-grid" style="grid-template-columns: 1fr 2fr">
+              <div class="card">
+                <h3 class="card-title" style="margin-bottom: 1rem">
+                  <i data-lucide="credit-card"></i> Record Payment
+                </h3>
+                <form id="adminPaymentForm">
+                  <div class="form-group">
+                    <select
+                      id="paymentMemberSelect"
+                      class="form-input"
+                      required
+                    >
+                      <option>Select Member</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="number"
+                      id="paymentAmount"
+                      class="form-input"
+                      placeholder="Amount (Rs.)"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <select id="paymentMethod" class="form-input">
+                      <option value="cash">Cash</option>
+                      <option value="card">Card</option>
+                      <option value="online">Online</option>
+                    </select>
+                  </div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    style="width: 100%"
+                  >
+                    Record Payment
+                  </button>
+                </form>
+              </div>
+              <div class="card table-card">
+                <h3 class="card-title" style="margin-bottom: 1rem">
+                  <i data-lucide="history"></i> Recent Payments
+                </h3>
+                <div class="table-container">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Member</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody id="adminPaymentsTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. TRAINERS -->
+          <!-- 5. TRAINERS & ASSIGNMENTS -->
+          <div id="view-trainers" class="admin-view" style="display: none">
+            <h3 class="card-title">
+              <i data-lucide="user-check"></i> All Trainers
+            </h3>
+            <button id="openTrainerModalBtn" class="btn btn-primary">
+              <i data-lucide="plus"></i> Add Trainer
+            </button>
+            <!-- Assignment Form -->
+            <div class="card" style="margin-bottom: 1.5rem">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i data-lucide="user-plus"></i> Assign Member to Trainer
+                </h3>
+              </div>
+              <div style="padding: 1.5rem">
+                <form
+                  id="assignTrainerForm"
+                  style="
+                    display: flex;
+                    gap: 1rem;
+                    align-items: flex-end;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <div class="form-group" style="flex: 1; min-width: 200px">
+                    <label class="form-label">Select Member</label>
+                    <select id="assignMemberSelect" class="form-input" required>
+                      <option>Loading members...</option>
+                    </select>
+                  </div>
+                  <div class="form-group" style="flex: 1; min-width: 200px">
+                    <label class="form-label">Select Trainer</label>
+                    <select
+                      id="assignTrainerSelect"
+                      class="form-input"
+                      required
+                    >
+                      <option>Loading trainers...</option>
+                    </select>
+                  </div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    style="height: 42px"
+                  >
+                    Send Request
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Trainers List -->
+            <div class="card table-card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i data-lucide="user-check"></i> All Trainers
+                </h3>
+              </div>
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Trainer Name</th>
+                      <th>Specialty</th>
+                      <th>Assigned Members</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminTrainersTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. EXPENSES -->
+          <div id="view-expenses" class="admin-view" style="display: none">
+            <div class="dashboard-grid" style="grid-template-columns: 1fr 2fr">
+              <div class="card">
+                <h3 class="card-title" style="margin-bottom: 1rem">
+                  <i data-lucide="plus-circle"></i> Add Expense
+                </h3>
+                <form id="adminExpenseForm">
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      id="expenseTitle"
+                      class="form-input"
+                      placeholder="Title (e.g., Electricity)"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="number"
+                      id="expenseAmount"
+                      class="form-input"
+                      placeholder="Amount (Rs.)"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <select id="expenseStatus" class="form-input">
+                      <option value="paid">Paid</option>
+                      <option value="pending">Pending</option>
+                    </select>
+                  </div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    style="width: 100%"
+                  >
+                    Add Expense
+                  </button>
+                </form>
+              </div>
+              <div class="card table-card">
+                <h3 class="card-title" style="margin-bottom: 1rem">
+                  <i data-lucide="receipt"></i> Gym Bills & Salaries
+                </h3>
+                <div class="table-container">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Expense Type</th>
+                        <th>Amount (Rs.)</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="adminExpensesTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <!-- Add/Edit Member Modal -->
-    <div id="addMemberModal" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="card-title" id="modalTitle">Add New Member</h3>
-                <button id="closeModalBtn" class="modal-close"><i data-lucide="x"></i></button>
-            </div>
-            <form id="addMemberForm">
-                <input type="hidden" id="editMemberId">
-                <div class="form-group"><label class="form-label">Full Name</label><input type="text" id="newMemberName" class="form-input" required></div>
-                <div class="form-group" id="emailGroup"><label class="form-label">Email</label><input type="email" id="newMemberEmail" class="form-input" required></div>
-                <div class="form-group"><label class="form-label">Phone</label><input type="text" id="newMemberPhone" class="form-input" required></div>
-                <div class="form-group" style="display: flex; gap: 1rem;">
-                    <div style="flex: 1;"><label class="form-label">Status</label><select id="newMemberStatus" class="form-input"><option value="active">Active</option><option value="frozen">Frozen</option></select></div>
-                    <div style="flex: 1;"><label class="form-label">Join Date</label><input type="date" id="newMemberJoinDate" class="form-input" required></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="cancelModalBtn" class="btn btn-outline">Cancel</button>
-                    <button type="submit" id="saveMemberBtn" class="btn btn-primary">Save Member</button>
-                </div>
-            </form>
+    <div id="addMemberModal" class="modal-overlay" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="card-title" id="modalTitle">Add New Member</h3>
+          <button id="closeModalBtn" class="modal-close">
+            <i data-lucide="x"></i>
+          </button>
         </div>
+        <form id="addMemberForm">
+          <input type="hidden" id="editMemberId" />
+          <div class="form-group">
+            <label class="form-label">Full Name</label
+            ><input
+              type="text"
+              id="newMemberName"
+              class="form-input"
+              required
+            />
+          </div>
+          <div class="form-group" id="emailGroup">
+            <label class="form-label">Email</label
+            ><input
+              type="email"
+              id="newMemberEmail"
+              class="form-input"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label
+            ><input
+              type="text"
+              id="newMemberPhone"
+              class="form-input"
+              required
+            />
+          </div>
+          <div class="form-group" style="display: flex; gap: 1rem">
+            <div style="flex: 1">
+              <label class="form-label">Status</label
+              ><select id="newMemberStatus" class="form-input">
+                <option value="active">Active</option>
+                <option value="frozen">Frozen</option>
+              </select>
+            </div>
+            <div style="flex: 1">
+              <label class="form-label">Join Date</label
+              ><input
+                type="date"
+                id="newMemberJoinDate"
+                class="form-input"
+                required
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="cancelModalBtn" class="btn btn-outline">
+              Cancel
+            </button>
+            <button type="submit" id="saveMemberBtn" class="btn btn-primary">
+              Save Member
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-<script src="../js/responsive-nav.js"></script>
+    <!-- ADD TRAINER MODAL -->
+    <div id="addTrainerModal" class="modal-overlay" style="display: none">
+      <div
+        class="modal-content"
+        style="max-width: 800px; max-height: 90vh; overflow-y: auto"
+      >
+        <div class="modal-header">
+          <h3 class="card-title">Add New Trainer</h3>
+          <button id="closeTrainerModalBtn" class="modal-close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <form id="addTrainerForm">
+          <!-- Personal Info -->
+          <h4 style="margin: 1rem 0 0.5rem 0; color: var(--primary)">
+            Personal Information
+          </h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+            <div class="form-group">
+              <label class="form-label">Full Name</label
+              ><input type="text" id="t_name" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label
+              ><input type="email" id="t_email" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone</label
+              ><input type="tel" id="t_phone" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Gender</label
+              ><select id="t_gender" class="form-input">
+                <option>male</option>
+                <option>female</option>
+                <option>other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date of Birth</label
+              ><input type="date" id="t_dob" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Joining Date</label
+              ><input
+                type="date"
+                id="t_join"
+                class="form-input"
+                value="2026-11-28"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">CNIC / National ID</label
+              ><input type="text" id="t_cnic" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Experience (Years)</label
+              ><input type="number" id="t_exp" class="form-input" min="0" />
+            </div>
+          </div>
+
+          <!-- Employment & Payroll -->
+          <h4 style="margin: 1.5rem 0 0.5rem 0; color: var(--primary)">
+            Employment & Payroll
+          </h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+            <div class="form-group">
+              <label class="form-label">Specialization</label
+              ><input
+                type="text"
+                id="t_spec"
+                class="form-input"
+                placeholder="e.g. Weight Loss, Crossfit"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Employment Type</label
+              ><select id="t_type" class="form-input">
+                <option>full-time</option>
+                <option>part-time</option>
+                <option>freelance</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Shift</label
+              ><select id="t_shift" class="form-input">
+                <option>morning</option>
+                <option>evening</option>
+                <option>flexible</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Status</label
+              ><select id="t_status" class="form-input">
+                <option>active</option>
+                <option>inactive</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Salary (Rs.)</label
+              ><input type="number" id="t_salary" class="form-input" min="0" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Commission Rate (%)</label
+              ><input
+                type="number"
+                id="t_comm"
+                class="form-input"
+                min="0"
+                max="100"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Member Limit</label
+              ><input
+                type="number"
+                id="t_limit"
+                class="form-input"
+                min="0"
+                max="100"
+                value="20"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Certifications</label
+              ><input
+                type="text"
+                id="t_certs"
+                class="form-input"
+                placeholder="ACE, NASM, etc."
+              />
+            </div>
+          </div>
+
+          <!-- Emergency & Bio -->
+          <h4 style="margin: 1.5rem 0 0.5rem 0; color: var(--primary)">
+            Emergency & Bio
+          </h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+            <div class="form-group">
+              <label class="form-label">Emergency Contact Name</label
+              ><input type="text" id="t_em_name" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Emergency Contact Phone</label
+              ><input type="tel" id="t_em_phone" class="form-input" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Address</label
+            ><textarea id="t_address" class="form-input" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Bio (Member-facing)</label
+            ><textarea
+              id="t_bio"
+              class="form-input"
+              rows="3"
+              placeholder="Tell members about your training philosophy..."
+            ></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="cancelTrainerModalBtn"
+              class="btn btn-outline"
+            >
+              Cancel
+            </button>
+            <button type="submit" id="saveTrainerBtn" class="btn btn-primary">
+              Save Trainer
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="../js/responsive-nav.js"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script type="module">
-        import { supabase } from "../js/config/supabase.js";
-        import { requireAuth } from "../js/auth/auth.guard.js";
-        import { logout } from "../js/auth/auth.service.js";
-        import { loadAdminDashboard, deleteMember, saveMemberEdit } from "../js/pages/admin-dashboard.js";
+      import { supabase } from "../js/config/supabase.js";
+      import { requireAuth } from "../js/auth/auth.guard.js";
+      import { logout } from "../js/auth/auth.service.js";
+      import {
+        loadAdminDashboard,
+        deleteMember,
+        saveMemberEdit,
+      } from "../js/pages/admin-dashboard.js";
 
-        const profile = await requireAuth(['admin', 'owner']);
-        
-        if (profile) {
-            document.getElementById('userName').textContent = profile.full_name;
-            document.getElementById('userAvatar').textContent = profile.full_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-            await loadAdminDashboard();
-            lucide.createIcons();
+      const profile = await requireAuth(["admin", "owner"]);
+
+      if (profile) {
+        document.getElementById("userName").textContent = profile.full_name;
+        document.getElementById("userAvatar").textContent = profile.full_name
+          .split(" ")
+          .map((n) => n[0])
+          .join("")
+          .substring(0, 2)
+          .toUpperCase();
+        await loadAdminDashboard();
+        lucide.createIcons();
+      }
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", async () => await logout());
+
+      // --- DYNAMIC TAB NAVIGATION ---
+      document.querySelectorAll(".sidebar-nav .nav-item").forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          document
+            .querySelectorAll(".sidebar-nav .nav-item")
+            .forEach((l) => l.classList.remove("active"));
+          link.classList.add("active");
+
+          document
+            .querySelectorAll(".admin-view")
+            .forEach((v) => (v.style.display = "none"));
+          const target = link.getAttribute("data-target");
+          document.getElementById(target).style.display = "block";
+
+          document.getElementById("pageTitle").textContent =
+            link.textContent.trim();
+        });
+      });
+
+      // --- MEMBER MODAL LOGIC ---
+      const modal = document.getElementById("addMemberModal");
+      const openBtn = document.getElementById("openMemberModalBtn");
+      const closeBtn = document.getElementById("closeModalBtn");
+      const cancelBtn = document.getElementById("cancelModalBtn");
+      const form = document.getElementById("addMemberForm");
+
+      document.getElementById("newMemberJoinDate").valueAsDate = new Date();
+      const openModal = () => {
+        modal.style.display = "flex";
+        lucide.createIcons();
+      };
+      const closeModal = () => {
+        modal.style.display = "none";
+        form.reset();
+        document.getElementById("editMemberId").value = "";
+        document.getElementById("modalTitle").textContent = "Add New Member";
+        document.getElementById("emailGroup").style.display = "block";
+        document.getElementById("newMemberJoinDate").valueAsDate = new Date();
+      };
+
+      openBtn.addEventListener("click", openModal);
+      closeBtn.addEventListener("click", closeModal);
+      cancelBtn.addEventListener("click", closeModal);
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // Handle Form Submit (Add OR Edit)
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const saveBtn = document.getElementById("saveMemberBtn");
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Saving...";
+
+        const editId = document.getElementById("editMemberId").value;
+        const name = document.getElementById("newMemberName").value;
+        const phone = document.getElementById("newMemberPhone").value;
+        const status = document.getElementById("newMemberStatus").value;
+        const joinDate = document.getElementById("newMemberJoinDate").value;
+
+        try {
+          if (editId) {
+            // EDIT MODE
+            await saveMemberEdit(editId, name, phone, status, joinDate);
+          } else {
+            // ADD MODE (Uses Edge Function)
+            const email = document.getElementById("newMemberEmail").value;
+            const { data, error } = await supabase.functions.invoke(
+              "create-member",
+              { body: { name, email, phone, status, joinDate } },
+            );
+            if (error) throw error;
+            if (data?.error) throw new Error(data.error);
+          }
+
+          alert(editId ? "Member updated!" : "Member added!");
+          closeModal();
+          await loadAdminDashboard();
+        } catch (err) {
+          alert("Error: " + err.message);
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.textContent = "Save Member";
         }
-        document.getElementById('logoutBtn').addEventListener('click', async () => await logout());
+      });
 
-        // --- DYNAMIC TAB NAVIGATION ---
-        document.querySelectorAll('.sidebar-nav .nav-item').forEach(link => {
-            link.addEventListener('click', (e) => {
+      // --- PAYMENT & EXPENSE FORMS ---
+      document
+        .getElementById("adminPaymentForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const member_id = document.getElementById(
+            "paymentMemberSelect",
+          ).value;
+          const amount = parseFloat(
+            document.getElementById("paymentAmount").value,
+          );
+          const payment_method = document.getElementById("paymentMethod").value;
+          try {
+            const { error } = await supabase
+              .from("payments")
+              .insert({
+                member_id,
+                amount,
+                payment_method,
+                status: "completed",
+              });
+            if (error) throw error;
+            alert("Payment recorded!");
+            document.getElementById("adminPaymentForm").reset();
+            await loadAdminDashboard();
+          } catch (err) {
+            alert("Error: " + err.message);
+          }
+        });
+
+      document
+        .getElementById("adminExpenseForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const title = document.getElementById("expenseTitle").value;
+          const amount = parseFloat(
+            document.getElementById("expenseAmount").value,
+          );
+          const status = document.getElementById("expenseStatus").value;
+          try {
+            const { error } = await supabase
+              .from("expenses")
+              .insert({ title, amount, status });
+            if (error) throw error;
+            alert("Expense added!");
+            document.getElementById("adminExpenseForm").reset();
+            await loadAdminDashboard();
+          } catch (err) {
+            alert("Error: " + err.message);
+          }
+        });
+
+      // Check-in button
+      document
+        .getElementById("checkInBtn")
+        .addEventListener("click", async () => {
+          const memberId = document.getElementById(
+            "attendanceMemberSelect",
+          ).value;
+          if (!memberId) return alert("Select a member");
+          try {
+            const { error } = await supabase
+              .from("attendance")
+              .insert({ member_id: memberId });
+            if (error) throw error;
+            alert("Checked in!");
+            await loadAdminDashboard();
+          } catch (err) {
+            alert("Error: " + err.message);
+          }
+        });
+                // --- TRAINER MODAL LOGIC ---
+        const tModal = document.getElementById('addTrainerModal');
+        const tOpenBtn = document.getElementById('openTrainerModalBtn');
+        const tCloseBtn = document.getElementById('closeTrainerModalBtn');
+        const tCancelBtn = document.getElementById('cancelTrainerModalBtn');
+        const tForm = document.getElementById('addTrainerForm');
+
+        const openTModal = () => { tModal.style.display = 'flex'; lucide.createIcons(); };
+        const closeTModal = () => { tModal.style.display = 'none'; tForm.reset(); };
+
+        if(tOpenBtn) tOpenBtn.addEventListener('click', openTModal);
+        if(tCloseBtn) tCloseBtn.addEventListener('click', closeTModal);
+        if(tCancelBtn) tCancelBtn.addEventListener('click', closeTModal);
+        if(tModal) tModal.addEventListener('click', (e) => { if (e.target === tModal) closeTModal(); });
+
+        if(tForm) {
+            tForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                document.querySelectorAll('.sidebar-nav .nav-item').forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-                
-                document.querySelectorAll('.admin-view').forEach(v => v.style.display = 'none');
-                const target = link.getAttribute('data-target');
-                document.getElementById(target).style.display = 'block';
-                
-                document.getElementById('pageTitle').textContent = link.textContent.trim();
-            });
-        });
+                const btn = document.getElementById('saveTrainerBtn');
+                btn.disabled = true; btn.textContent = 'Saving...';
 
-        // --- MEMBER MODAL LOGIC ---
-        const modal = document.getElementById('addMemberModal');
-        const openBtn = document.getElementById('openMemberModalBtn');
-        const closeBtn = document.getElementById('closeModalBtn');
-        const cancelBtn = document.getElementById('cancelModalBtn');
-        const form = document.getElementById('addMemberForm');
+                const trainerData = {
+                    full_name: document.getElementById('t_name').value,
+                    email: document.getElementById('t_email').value,
+                    phone: document.getElementById('t_phone').value,
+                    gender: document.getElementById('t_gender').value,
+                    date_of_birth: document.getElementById('t_dob').value,
+                    joining_date: document.getElementById('t_join').value,
+                    cnic: document.getElementById('t_cnic').value,
+                    experience_years: parseInt(document.getElementById('t_exp').value) || 0,
+                    specialization: document.getElementById('t_spec').value,
+                    employment_type: document.getElementById('t_type').value,
+                    shift: document.getElementById('t_shift').value,
+                    status: document.getElementById('t_status').value,
+                    salary: parseFloat(document.getElementById('t_salary').value) || 0,
+                    commission_rate: parseFloat(document.getElementById('t_comm').value) || 0,
+                    assigned_members_limit: parseInt(document.getElementById('t_limit').value) || 20,
+                    certifications: document.getElementById('t_certs').value,
+                    emergency_contact_name: document.getElementById('t_em_name').value,
+                    emergency_contact_phone: document.getElementById('t_em_phone').value,
+                    address: document.getElementById('t_address').value,
+                    bio: document.getElementById('t_bio').value
+                };
 
-        document.getElementById('newMemberJoinDate').valueAsDate = new Date();
-        const openModal = () => { modal.style.display = 'flex'; lucide.createIcons(); };
-        const closeModal = () => { 
-            modal.style.display = 'none'; 
-            form.reset(); 
-            document.getElementById('editMemberId').value = '';
-            document.getElementById('modalTitle').textContent = 'Add New Member';
-            document.getElementById('emailGroup').style.display = 'block';
-            document.getElementById('newMemberJoinDate').valueAsDate = new Date(); 
-        };
-
-        openBtn.addEventListener('click', openModal);
-        closeBtn.addEventListener('click', closeModal);
-        cancelBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-        // Handle Form Submit (Add OR Edit)
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const saveBtn = document.getElementById('saveMemberBtn');
-            saveBtn.disabled = true; saveBtn.textContent = 'Saving...';
-            
-            const editId = document.getElementById('editMemberId').value;
-            const name = document.getElementById('newMemberName').value;
-            const phone = document.getElementById('newMemberPhone').value;
-            const status = document.getElementById('newMemberStatus').value;
-            const joinDate = document.getElementById('newMemberJoinDate').value;
-
-            try {
-                if (editId) {
-                    // EDIT MODE
-                    await saveMemberEdit(editId, name, phone, status, joinDate);
-                } else {
-                    // ADD MODE (Uses Edge Function)
-                    const email = document.getElementById('newMemberEmail').value;
-                    const { data, error } = await supabase.functions.invoke("create-member", { body: { name, email, phone, status, joinDate } });
+                try {
+                    const { error } = await supabase.from('trainers').insert(trainerData);
                     if (error) throw error;
-                    if (data?.error) throw new Error(data.error);
-                }
-                
-                alert(editId ? 'Member updated!' : 'Member added!');
-                closeModal();
-                await loadAdminDashboard();
-            } catch (err) { alert('Error: ' + err.message); }
-            finally { saveBtn.disabled = false; saveBtn.textContent = 'Save Member'; }
-        });
-
-        // --- PAYMENT & EXPENSE FORMS ---
-        document.getElementById('adminPaymentForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const member_id = document.getElementById('paymentMemberSelect').value;
-            const amount = parseFloat(document.getElementById('paymentAmount').value);
-            const payment_method = document.getElementById('paymentMethod').value;
-            try {
-                const { error } = await supabase.from('payments').insert({ member_id, amount, payment_method, status: 'completed' });
-                if (error) throw error;
-                alert('Payment recorded!');
-                document.getElementById('adminPaymentForm').reset();
-                await loadAdminDashboard();
-            } catch (err) { alert('Error: ' + err.message); }
-        });
-
-        document.getElementById('adminExpenseForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const title = document.getElementById('expenseTitle').value;
-            const amount = parseFloat(document.getElementById('expenseAmount').value);
-            const status = document.getElementById('expenseStatus').value;
-            try {
-                const { error } = await supabase.from('expenses').insert({ title, amount, status });
-                if (error) throw error;
-                alert('Expense added!');
-                document.getElementById('adminExpenseForm').reset();
-                await loadAdminDashboard();
-            } catch (err) { alert('Error: ' + err.message); }
-        });
-
-        // Check-in button
-        document.getElementById('checkInBtn').addEventListener('click', async () => {
-            const memberId = document.getElementById('attendanceMemberSelect').value;
-            if(!memberId) return alert('Select a member');
-            try {
-                const { error } = await supabase.from('attendance').insert({ member_id: memberId });
-                if(error) throw error;
-                alert('Checked in!');
-                await loadAdminDashboard();
-            } catch(err) { alert('Error: ' + err.message); }
-        });
+                    alert('Trainer added successfully!');
+                    closeTModal();
+                    await loadAdminDashboard(); // Refresh table
+                } catch (err) { alert('Error: ' + err.message); }
+                finally { btn.disabled = false; btn.textContent = 'Save Trainer'; }
+            });
+        }
     </script>
-</body>
+  </body>
 </html>
